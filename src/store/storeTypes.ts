@@ -1,8 +1,37 @@
+export enum Step {
+    HOMELAND,
+    RUNES
+}
+
 export interface Character {
     name: string;
     homeland: HomelandTitle;
     passions: Passion[];
     cult: Cult;
+    elementalRunesAffinity: RuneElemental[];
+    formAndPowerRunesAffinities: RunePower | RuneForm[];
+    runes: {
+        elemental: {
+            wind: number,
+            earth: number,
+            water: number,
+            fire: number,
+            moon: number,
+            darkness: number,
+        },
+        power: {
+            stasis: number,
+            movement: number,
+            harmony: number,
+            disorder: number,
+            death: number,
+            fertility: number,
+        },
+        form: {
+            beast: number,
+            man: number,
+        }
+    }
 }
 
 export interface Homeland {
@@ -19,6 +48,7 @@ export interface Cult {
     runes: RuneElemental & RunePower & RuneForm[]
 }
 
+export type RuneType = 'elemental' | 'power' | 'form';
 export type RuneElemental = 'wind' | 'earth' | 'water' | 'fire' | 'moon' | 'darkness';
 export type RunePower = 'stasis' | 'movement' | 'harmony' | 'disorder' | 'death' | 'fertility';
 export type RuneForm = 'beast' | 'man';

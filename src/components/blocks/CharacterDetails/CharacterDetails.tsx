@@ -57,11 +57,39 @@ class CharacterDetailsView extends React.Component<CharacterDetailsProps> {
         return null;
     }
 
+    renderRunes() {
+        const {elemental, form, power} = this.props.character.runes;
+        console.log(elemental);
+
+        return <div>
+            <h4>Runes</h4>
+            <h5>Elemental</h5>
+            <ul>
+                {Object.keys(elemental).map((runeName, index) =>
+                    <li key={index}>{runeName} - {elemental[runeName]}%</li>
+                )}
+            </ul>
+            <h5>Power</h5>
+            <ul>
+                {Object.keys(power).map((runeName, index) =>
+                    <li key={index}>{runeName} - {power[runeName]}%</li>
+                )}
+            </ul>
+            <h5>Form</h5>
+            <ul>
+                {Object.keys(form).map((runeName, index) =>
+                    <li key={index}>{runeName} - {form[runeName]}%</li>
+                )}
+            </ul>
+        </div>
+    }
+
     render() {
         return <>
             <h2>Character</h2>
             {this.renderHomeland()}
             {this.renderPassions()}
+            {this.renderRunes()}
         </>
     }
 }

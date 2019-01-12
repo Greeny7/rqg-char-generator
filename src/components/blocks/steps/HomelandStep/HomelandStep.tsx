@@ -1,41 +1,40 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { GlobalState } from '../../../store/store';
-import { Homeland, HomelandTitle } from '../../../store/storeTypes';
-import { getGameEntity } from '../../../gameEntities/gameEntities';
-import { selectHomeland } from '../../../store/thunks';
-const CSS = require('./HomelandSelectList.css');
+import { GlobalState } from '../../../../store/store';
+import {Homeland, HomelandTitle, Step} from '../../../../store/storeTypes';
+import { getGameEntity } from '../../../../gameEntities/gameEntities';
+import { selectHomeland } from '../../../../store/thunks';
+import {setStep} from "../../../../store/actions";
+const CSS = require('./HomelandStep.css');
 const homelandList = getGameEntity('homelands');
 
-interface HomelandSelectOwnProps {}
+interface HomelandStepOwnProps {}
 
-interface HomelandSelectPropsFromState {
+interface HomelandStepPropsFromState {
     selectedHomeland: HomelandTitle
 }
 
-interface HomelandSelectDispatchProps {
+interface HomelandStepDispatchProps {
     selectHomeland(homelandTitle: HomelandTitle): void;
+    nextStep(): void;
 }
 
-type HomelandSelectProps = HomelandSelectOwnProps & HomelandSelectPropsFromState & HomelandSelectDispatchProps;
+type HomelandStepProps = HomelandStepOwnProps & HomelandStepPropsFromState & HomelandStepDispatchProps;
 
-const mapStateToProps = (state: GlobalState): HomelandSelectPropsFromState => {
-    return {
-        selectedHomeland: state.character.homeland
-    };
-};
+const mapStateToProps = (state: GlobalState): HomelandStepPropsFromState => ({
+    selectedHomeland: state.character.homeland
+});
 
-const mapDispatchToProps = (dispatch): HomelandSelectDispatchProps => {
-    return {
-        selectHomeland: (homelandTitle: HomelandTitle) => dispatch(selectHomeland(homelandTitle))
-    };
-};
+const mapDispatchToProps = (dispatch): HomelandStepDispatchProps => ({
+    selectHomeland: (homelandTitle: HomelandTitle) => dispatch(selectHomeland(homelandTitle)),
+    nextStep: () => dispatch(setStep(Step.RUNES))
+});
 
 interface HomelandSelectViewState {
     hoveredItem: Homeland;
 }
 
-class HomelandSelectListView extends React.Component<HomelandSelectProps, HomelandSelectViewState> {
+class HomelandStepView extends React.Component<HomelandStepProps, HomelandSelectViewState> {
 
     state = {
         hoveredItem: null
@@ -75,9 +74,9 @@ class HomelandSelectListView extends React.Component<HomelandSelectProps, Homela
                </li>)}
             </ul>
             {this.renderDetails()}
-            {this.props.selectedHomeland && <button type={'button'}>next</button>}
+            {this.props.selectedHomeland && <button type={'button'} onClick={this.props.nextStep}>next</button>}
         </>
     }
 }
 
-export const HomelandSelectList = connect(mapStateToProps, mapDispatchToProps)(HomelandSelectListView);
+export const HomelandStep = connect(mapStateToProps, mapDispatchToProps)(HomelandStepView);
