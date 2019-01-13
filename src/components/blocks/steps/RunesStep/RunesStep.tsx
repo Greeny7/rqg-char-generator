@@ -1,12 +1,13 @@
-import {
-    selectHomeland, selectPrimaryElementalRune, selectSecondaryElementalRune,
-    selectTertiaryElementalRune
-} from "../../../../store/thunks";
-import {Homeland, HomelandTitle, RuneElemental, Step} from "../../../../store/storeTypes";
-import {GlobalState} from "../../../../store/store";
 import * as React from "react";
 import { connect } from 'react-redux';
-import {setStep} from "../../../../store/actions";
+import {GlobalState} from "../../../../store/storeTypes";
+import {setStep} from "../../../../store/stepsStore/stepsActions";
+import {Step} from "../../../../store/stepsStore/stepsStoreTypes";
+import {
+    selectPrimaryElementalRune,
+    selectSecondaryElementalRune, selectTertiaryElementalRune
+} from "../../../../store/characterStore/characterRunesStore/characterRunesThunks";
+import {RuneElemental} from "../../../../gameEntities/gameEntitiesTypes";
 const CSS = require('./RunesStep.css');
 
 interface RunesStepOwnProps {}
@@ -25,7 +26,7 @@ interface RunesStepDispatchProps {
 type RunesStepProps = RunesStepOwnProps & RunesStepPropsFromState & RunesStepDispatchProps;
 
 const mapStateToProps = (state: GlobalState): RunesStepPropsFromState => ({
-    elementalRunesAffinity: state.character.elementalRunesAffinity
+    elementalRunesAffinity: state.character.runes.elementalRunesAffinity
 });
 
 const mapDispatchToProps = (dispatch): RunesStepDispatchProps => ({

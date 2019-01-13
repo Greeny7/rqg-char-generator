@@ -1,4 +1,4 @@
-import { Homeland } from '../../store/storeTypes';
+import {Homeland} from "../gameEntitiesTypes";
 
 export const esrolia: Homeland = {
     title: "Esrolia",

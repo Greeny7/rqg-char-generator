@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { GlobalState } from '../../../store/store';
-import { Character, Homeland, HomelandTitle } from '../../../store/storeTypes';
+import {GlobalState} from "../../../store/storeTypes";
+import {CharacterStore} from "../../../store/characterStore/characterStoreTypes";
 // import { makeLovelyAction } from '../../../store/actions';
 const CSS = require('./CharacterDetails.css');
 
@@ -9,7 +9,7 @@ interface CharacterDetailsOwnProps {
 }
 
 interface CharacterDetailsPropsFromState {
-    character: Character,
+    character: CharacterStore,
 }
 
 interface CharacterDetailsDispatchProps {
@@ -33,7 +33,7 @@ const mapDispatchToProps = (dispatch): CharacterDetailsDispatchProps => {
 class CharacterDetailsView extends React.Component<CharacterDetailsProps> {
 
     renderPassions() {
-        const passions = this.props.character.passions;
+        const { passions } = this.props.character;
         if (passions.length > 0) {
             return <>
                 <h3>Passions</h3>

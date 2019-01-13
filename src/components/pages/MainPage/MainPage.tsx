@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { CharacterDetails } from '../../blocks/CharacterDetails/CharacterDetails';
-import {Step} from "../../../store/storeTypes";
-import {GlobalState} from "../../../store/store";
 import {HomelandStep} from "../../blocks/steps/HomelandStep/HomelandStep";
 import {RunesStep} from "../../blocks/steps/RunesStep/RunesStep";
+import {Step} from "../../../store/stepsStore/stepsStoreTypes";
+import {GlobalState} from "../../../store/storeTypes";
 const CSS = require('./MainPage.css');
 
 interface MainPagePropsFromState {
@@ -13,7 +12,7 @@ interface MainPagePropsFromState {
 }
 
 const mapStateToProps = (state: GlobalState): MainPagePropsFromState => ({
-    step: state.step
+    step: state.steps.currentStep
 });
 
 class MainPageView extends React.PureComponent<MainPagePropsFromState> {

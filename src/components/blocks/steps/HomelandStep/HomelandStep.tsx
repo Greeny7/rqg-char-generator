@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { GlobalState } from '../../../../store/store';
-import {Homeland, HomelandTitle, Step} from '../../../../store/storeTypes';
 import { getGameEntity } from '../../../../gameEntities/gameEntities';
-import { selectHomeland } from '../../../../store/thunks';
-import {setStep} from "../../../../store/actions";
+import {GlobalState} from "../../../../store/storeTypes";
+import {setStep} from "../../../../store/stepsStore/stepsActions";
+import {Step} from "../../../../store/stepsStore/stepsStoreTypes";
+import {selectHomeland} from "../../../../store/characterStore/characterThunks";
+import {Homeland, HomelandTitle} from "../../../../gameEntities/gameEntitiesTypes";
 const CSS = require('./HomelandStep.css');
 const homelandList = getGameEntity('homelands');
 
