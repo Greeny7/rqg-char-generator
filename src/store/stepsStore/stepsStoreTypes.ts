@@ -4,5 +4,6 @@ export interface StepsStore {
 
 export enum Step {
     HOMELAND,
-    RUNES
+    RUNES,
+    RUNES_DISTRIBUTION
 }

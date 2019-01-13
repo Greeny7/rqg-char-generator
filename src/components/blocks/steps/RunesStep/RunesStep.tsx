@@ -41,7 +41,7 @@ const mapDispatchToProps = (dispatch): RunesStepDispatchProps => ({
     selectTertiaryElementalRune: (runeName: RuneElementalTitle) => dispatch(selectTertiaryElementalRune(runeName)),
     toggleFormRuneAffinity: (runeName: RuneFormTitle) => dispatch(toggleFormRuneAffinity(runeName)),
     togglePowerRuneAffinity: (runeName: RunePowerTitle) => dispatch(togglePowerRuneAffinity(runeName)),
-    nextStep: () => dispatch(setStep(Step.HOMELAND)),
+    nextStep: () => dispatch(setStep(Step.RUNES_DISTRIBUTION)),
     prevStep: () => dispatch(setStep(Step.HOMELAND)),
 });
 
@@ -68,9 +68,12 @@ class RunesStepView extends React.PureComponent<RunesStepProps> {
             this.props.elementalRunesAffinity[1] &&
             this.props.elementalRunesAffinity[2] &&
             this.props.formAndPowerRunesAffinities.length === 2;
-        const elementalRunes: RuneElementalTitle[] = getRunesList().elemental.map(rune => rune.title);
-        const powerRunes: RunePowerTitle[] = getRunesList().power.map(rune => rune.title);
-        const formRunes: RuneFormTitle[] = getRunesList().form.map(rune => rune.title);
+
+        const runesList = getRunesList();
+        const elementalRunes: RuneElementalTitle[] = runesList.elemental.map(rune => rune.title);
+        const powerRunes: RunePowerTitle[] = runesList.power.map(rune => rune.title);
+        const formRunes: RuneFormTitle[] = runesList.form.map(rune => rune.title);
+
         return <div>
             <h4>Choose primary elemental rune (+60%):</h4>
             <ul>
@@ -137,7 +140,7 @@ class RunesStepView extends React.PureComponent<RunesStepProps> {
                 {powerRunes
                     .map((runeName, index) => {
                             const selected = this.props.formAndPowerRunesAffinities.includes(runeName);
-                            const oppositeRune = getRunesList().power.find(r => r.title === runeName).oppositeRune;
+                            const oppositeRune = runesList.power.find(r => r.title === runeName).oppositeRune;
                             const oppositeSelected = this.props.formAndPowerRunesAffinities.includes(oppositeRune);
                             const unactive =
                                 oppositeSelected ||
@@ -155,7 +158,7 @@ class RunesStepView extends React.PureComponent<RunesStepProps> {
                 {formRunes
                     .map((runeName, index) => {
                             const selected = this.props.formAndPowerRunesAffinities.includes(runeName);
-                            const oppositeRune = getRunesList().form.find(r => r.title === runeName).oppositeRune;
+                            const oppositeRune = runesList.form.find(r => r.title === runeName).oppositeRune;
                             const oppositeSelected = this.props.formAndPowerRunesAffinities.includes(oppositeRune);
                             const unactive =
                                 oppositeSelected ||
@@ -173,7 +176,11 @@ class RunesStepView extends React.PureComponent<RunesStepProps> {
             </ul>
 
             <button type={'button'} onClick={this.undo}>undo</button>
-            <button type={'button'} disabled={!nextStepReady} onClick={this.props.nextStep}>next</button>
+            <button
+                type={'button'}
+                disabled={!nextStepReady}
+                className={!nextStepReady ? CSS.unactive : ''}
+                onClick={this.props.nextStep}>next</button>
         </div>;
     }
 }

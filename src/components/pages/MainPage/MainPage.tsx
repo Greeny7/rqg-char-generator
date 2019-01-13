@@ -5,6 +5,7 @@ import {HomelandStep} from "../../blocks/steps/HomelandStep/HomelandStep";
 import {RunesStep} from "../../blocks/steps/RunesStep/RunesStep";
 import {Step} from "../../../store/stepsStore/stepsStoreTypes";
 import {GlobalState} from "../../../store/storeTypes";
+import {RunesDistributionStep} from "../../blocks/steps/RunesDistributionStep/RunesDistributionStep";
 const CSS = require('./MainPage.css');
 
 interface MainPagePropsFromState {
@@ -26,6 +27,8 @@ class MainPageView extends React.PureComponent<MainPagePropsFromState> {
                             ? <HomelandStep />
                             : this.props.step === Step.RUNES
                             ? <RunesStep />
+                            : this.props.step === Step.RUNES_DISTRIBUTION
+                            ? <RunesDistributionStep />
                             : null
                     }
 
