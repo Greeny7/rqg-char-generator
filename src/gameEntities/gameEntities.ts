@@ -36,10 +36,10 @@ const gameEntities: GameEntities = {
             runeBeast
         ],
         elemental: [
+            runeAir,
             runeWater,
             runeEarth,
             runeFire,
-            runeAir,
             runeDarkness,
             runeMoon,
         ],

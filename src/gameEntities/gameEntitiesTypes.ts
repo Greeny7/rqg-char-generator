@@ -121,6 +121,7 @@ export enum RuneFormTitle {
 
 export interface RuneElemental {
     title: RuneElementalTitle,
+    type: RuneType.ELEMENTAL,
     description: string,
     characteristic: Characteristic,
     personality: string,
@@ -134,12 +135,14 @@ export interface RuneElemental {
 }
 
 export interface RuneForm {
+    type: RuneType.FORM,
     title: RuneFormTitle,
     description: string,
     oppositeRune: RuneFormTitle,
 }
 
 export interface RunePower {
+    type: RuneType.POWER,
     title: RunePowerTitle,
     description: string,
     oppositeRune: RunePowerTitle,

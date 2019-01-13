@@ -25,6 +25,7 @@ interface RunesStepDispatchProps {
     toggleFormRuneAffinity(runeName: RuneFormTitle): void;
     togglePowerRuneAffinity(runeName: RunePowerTitle): void;
     nextStep(): void;
+    prevStep(): void;
 }
 
 type RunesStepProps = RunesStepOwnProps & RunesStepPropsFromState & RunesStepDispatchProps;
@@ -40,10 +41,27 @@ const mapDispatchToProps = (dispatch): RunesStepDispatchProps => ({
     selectTertiaryElementalRune: (runeName: RuneElementalTitle) => dispatch(selectTertiaryElementalRune(runeName)),
     toggleFormRuneAffinity: (runeName: RuneFormTitle) => dispatch(toggleFormRuneAffinity(runeName)),
     togglePowerRuneAffinity: (runeName: RunePowerTitle) => dispatch(togglePowerRuneAffinity(runeName)),
-    nextStep: () => dispatch(setStep(Step.HOMELAND))
+    nextStep: () => dispatch(setStep(Step.HOMELAND)),
+    prevStep: () => dispatch(setStep(Step.HOMELAND)),
 });
 
 class RunesStepView extends React.PureComponent<RunesStepProps> {
+
+    undo = () => {
+        [...this.props.formAndPowerRunesAffinities]
+            .forEach(runeName => {
+                if (runeName === RuneFormTitle.MAN || runeName === RuneFormTitle.BEAST) {
+                    this.props.toggleFormRuneAffinity(runeName);
+                } else {
+                    this.props.togglePowerRuneAffinity(runeName);
+                }
+            });
+        this.props.selectPrimaryElementalRune(null);
+        this.props.selectSecondaryElementalRune(null);
+        this.props.selectTertiaryElementalRune(null);
+        this.props.prevStep();
+    }
+
     render() {
         const nextStepReady =
             this.props.elementalRunesAffinity[0] &&
@@ -154,7 +172,8 @@ class RunesStepView extends React.PureComponent<RunesStepProps> {
                     )}
             </ul>
 
-            {nextStepReady && <button type={'button'} onClick={this.props.nextStep}>next</button>}
+            <button type={'button'} onClick={this.undo}>undo</button>
+            <button type={'button'} disabled={!nextStepReady} onClick={this.props.nextStep}>next</button>
         </div>;
     }
 }

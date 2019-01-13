@@ -1,6 +1,7 @@
-import {Characteristic, RuneElemental, RuneElementalTitle, SkillCategory} from "../gameEntitiesTypes";
+import {Characteristic, RuneElemental, RuneElementalTitle, RuneType, SkillCategory} from "../gameEntitiesTypes";
 
 export const runeWater: RuneElemental = {
+    type: RuneType.ELEMENTAL,
     title: RuneElementalTitle.WATER,
     description: `
 Within Water lies all the potential of the universe
@@ -23,6 +24,7 @@ mercurial, capricious, and mutable.
 };
 
 export const runeDarkness: RuneElemental = {
+    type: RuneType.ELEMENTAL,
     title: RuneElementalTitle.DARKNESS,
     description: `
 The element of Darkness was the first to withdraw itself
@@ -50,6 +52,7 @@ be cold, cruel, patient, and secretive.
 
 
 export const runeEarth: RuneElemental = {
+    type: RuneType.ELEMENTAL,
     title: RuneElementalTitle.EARTH,
     description: `
 The element of matter and the terrestrial
@@ -74,6 +77,7 @@ pragmatic, prudent, worldly, and sensual.
 };
 
 export const runeFire: RuneElemental = {
+    type: RuneType.ELEMENTAL,
     title: RuneElementalTitle.FIRE,
     description: `
 The element of Fire/Sky is purification. It
@@ -98,6 +102,7 @@ to be pure, chaste, idealistic, and perceptive.
 };
 
 export const runeAir: RuneElemental = {
+    type: RuneType.ELEMENTAL,
     title: RuneElementalTitle.AIR,
     description: `
 The element of strength and violence, Air
@@ -121,6 +126,7 @@ passionate, violent, proud, and unpredictable.
 };
 
 export const runeMoon: RuneElemental = {
+    type: RuneType.ELEMENTAL,
     title: RuneElementalTitle.MOON,
     description: `
 The element of Moon was destroyed in the

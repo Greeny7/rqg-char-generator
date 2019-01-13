@@ -11,7 +11,7 @@ export function selectPrimaryElementalRune(runeName: RuneElementalTitle) {
         const state = getState();
 
         const oldPrimaryRune = state.character.runes.elementalRunesAffinity[0];
-        if (oldPrimaryRune === runeName) {
+        if (runeName && oldPrimaryRune === runeName) {
             const oldPrimaryRuneValue = state.character.runes.elemental[oldPrimaryRune];
             const newOldRuneValue = oldPrimaryRuneValue - 60;
             dispatch(setElementalRune(oldPrimaryRune, newOldRuneValue));
@@ -25,7 +25,10 @@ export function selectPrimaryElementalRune(runeName: RuneElementalTitle) {
             dispatch(setElementalRune(oldPrimaryRune, newOldRuneValue));
         }
 
-        dispatch(setElementalRune(runeName, state.character.runes.elemental[runeName] + 60));
+        if (runeName) {
+            dispatch(setElementalRune(runeName, state.character.runes.elemental[runeName] + 60));
+        }
+
         dispatch(setPrimaryRuneTitle(runeName));
     }
 }
@@ -35,7 +38,7 @@ export function selectSecondaryElementalRune(runeName: RuneElementalTitle) {
         const state = getState();
 
         const oldSecondaryRune = state.character.runes.elementalRunesAffinity[1];
-        if (oldSecondaryRune === runeName) {
+        if (runeName && oldSecondaryRune === runeName) {
             const oldPrimaryRuneValue = state.character.runes.elemental[oldSecondaryRune];
             const newOldRuneValue = oldPrimaryRuneValue - 40;
             dispatch(setElementalRune(oldSecondaryRune, newOldRuneValue));
@@ -49,7 +52,9 @@ export function selectSecondaryElementalRune(runeName: RuneElementalTitle) {
             dispatch(setElementalRune(oldSecondaryRune, newOldRuneValue));
         }
 
-        dispatch(setElementalRune(runeName, state.character.runes.elemental[runeName] + 40));
+        if (runeName) {
+            dispatch(setElementalRune(runeName, state.character.runes.elemental[runeName] + 40));
+        }
         dispatch(setSecondaryRuneTitle(runeName));
     }
 }
@@ -59,7 +64,7 @@ export function selectTertiaryElementalRune(runeName: RuneElementalTitle) {
         const state = getState();
 
         const oldTertiaryRune = state.character.runes.elementalRunesAffinity[2];
-        if (oldTertiaryRune === runeName) {
+        if (runeName && oldTertiaryRune === runeName) {
             const oldPrimaryRuneValue = state.character.runes.elemental[oldTertiaryRune];
             const newOldRuneValue = oldPrimaryRuneValue - 20;
             dispatch(setElementalRune(oldTertiaryRune, newOldRuneValue));
@@ -73,7 +78,9 @@ export function selectTertiaryElementalRune(runeName: RuneElementalTitle) {
             dispatch(setElementalRune(oldTertiaryRune, newOldRuneValue));
         }
 
-        dispatch(setElementalRune(runeName, state.character.runes.elemental[runeName] + 20));
+        if (runeName) {
+            dispatch(setElementalRune(runeName, state.character.runes.elemental[runeName] + 20));
+        }
         dispatch(setTertiaryRuneTitle(runeName));
     }
 }
