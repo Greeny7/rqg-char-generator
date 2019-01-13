@@ -3,7 +3,8 @@ export interface Homeland {
     description: {title: string, text: string}[];
     commonCults: CultTitle[];
     sugggestedOccupations: OccupationTitle[];
-    passions: Passion[]
+    passions: Passion[];
+    runeBonus: {title: RuneElementalTitle, value: number}
 }
 
 export interface Cult {

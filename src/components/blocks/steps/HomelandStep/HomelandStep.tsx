@@ -57,6 +57,7 @@ class HomelandStepView extends React.Component<HomelandStepProps, HomelandSelect
                     <b>{passion.name} {passion.target && `(${passion.target})`}</b>: {passion.value}%
                 </li>)}
             </ul>
+            <p>rune bonus: <b>{homeland.runeBonus.title}</b>: +{homeland.runeBonus.value}%</p>
         </>
     };
 

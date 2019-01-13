@@ -1,4 +1,4 @@
-import {Homeland} from "../gameEntitiesTypes";
+import {Homeland, RuneElementalTitle} from "../gameEntitiesTypes";
 
 export const esrolia: Homeland = {
     title: "Esrolia",
@@ -49,6 +49,10 @@ export const esrolia: Homeland = {
         {name: 'Love', target: 'family', value: 60},
         {name: 'Loyalty', target: 'city', value: 60},
         {name: 'Loyalty', target: 'clan', value: 60}
-    ]
+    ],
+    runeBonus: {
+        title: RuneElementalTitle.EARTH,
+        value: 10
+    }
 };
 

@@ -1,4 +1,4 @@
-import {Homeland} from "../gameEntitiesTypes";
+import {Homeland, RuneElementalTitle} from "../gameEntitiesTypes";
 
 export const sartar: Homeland = {
     title: "Sartar",
@@ -45,5 +45,9 @@ ally with non-humans and even dragons to fight against it.
         {name: 'Love', target: 'family', value: 60},
         {name: 'Loyalty', target: 'clan', value: 60},
         {name: 'Loyalty', target: 'tribe', value: 60}
-    ]
+    ],
+    runeBonus: {
+        title: RuneElementalTitle.AIR,
+        value: 10
+    }
 };
