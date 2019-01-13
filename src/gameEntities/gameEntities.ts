@@ -1,19 +1,55 @@
 import { esrolia } from './homelands/esrolia';
 import { sartar } from './homelands/sartar';
+import {Homeland, RuneElemental, RuneForm, RunePower} from "./gameEntitiesTypes";
+import {cloneObject} from "../utils/cloneObject";
+import {
+    runeDeath, runeDisorder, runeFertility, runeHarmony, runeIllusioin, runeMovement, runeStasis,
+    runeTruth
+} from "./runes/powerRunes";
+import {runeBeast, runeMan} from "./runes/formRunes";
+import {runeAir, runeDarkness, runeEarth, runeFire, runeMoon, runeWater} from "./runes/elementalRunes";
 
-function cloneObject<T>(obj: T): T {
-    return JSON.parse(JSON.stringify(obj))
+interface GameEntities {
+    homelands: Homeland[],
+    runes: {
+        power: RunePower[],
+        form: RuneForm[],
+        elemental: RuneElemental[]
+    }
 }
 
-type gameEntityTypes = 'homelands';
-
-const gameEntities = {
+const gameEntities: GameEntities = {
     homelands: [esrolia, sartar],
+    runes: {
+        power: [
+            runeStasis,
+            runeMovement,
+            runeTruth,
+            runeIllusioin,
+            runeFertility,
+            runeDeath,
+            runeHarmony,
+            runeDisorder,
+        ],
+        form: [
+            runeMan,
+            runeBeast
+        ],
+        elemental: [
+            runeWater,
+            runeEarth,
+            runeFire,
+            runeAir,
+            runeDarkness,
+            runeMoon,
+        ],
+    }
 };
 
-export function getGameEntity(key: gameEntityTypes) {
-    if (gameEntities[key] === undefined) {
-        throw Error('no such game entity as ' + key);
-    }
-    return cloneObject(gameEntities[key]);
+export function getHomelandsList() {
+    return cloneObject(gameEntities.homelands);
+}
+
+export function getRunesList() {
+    return cloneObject(gameEntities.runes);
 }

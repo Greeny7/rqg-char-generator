@@ -1,13 +1,13 @@
-import {RuneElemental, RuneForm, RunePower} from "../../../gameEntities/gameEntitiesTypes";
+import {RuneElementalTitle, RuneFormTitle, RunePowerTitle} from "../../../gameEntities/gameEntitiesTypes";
 
 export interface CharacterRunes {
-    elementalRunesAffinity: RuneElemental[];
-    formAndPowerRunesAffinities: RunePower | RuneForm[];
+    elementalRunesAffinity: RuneElementalTitle[];
+    formAndPowerRunesAffinities: (RunePowerTitle | RuneFormTitle)[];
     elemental: {
-        wind: number,
+        air: number,
         earth: number,
         water: number,
-        fire: number,
+        'fire/sky': number,
         moon: number,
         darkness: number,
     },
@@ -18,6 +18,8 @@ export interface CharacterRunes {
         disorder: number,
         death: number,
         fertility: number,
+        illusion: number,
+        truth: number,
     },
     form: {
         beast: number,

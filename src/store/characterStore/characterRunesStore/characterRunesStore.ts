@@ -1,16 +1,18 @@
 import {
-    SET_PRIMARY_RUNE_TITLE_ACTION, SET_RUNE_ACTION, SET_SECONDARY_RUNE_TITLE_ACTION,
-    SET_TERTIARY_RUNE_TITLE_ACTION
+    SET_PRIMARY_RUNE_TITLE_ACTION, SET_ELEMENTAL_RUNE_ACTION, SET_SECONDARY_RUNE_TITLE_ACTION,
+    SET_TERTIARY_RUNE_TITLE_ACTION, SET_POWER_RUNE_ACTION, SET_FORM_RUNE_ACTION,
+    SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION
 } from "./characterRunesActions";
+import {CharacterRunes} from "./characterRunesStoreTypes";
 
-export const defaultCharacterRunesState = {
+export const defaultCharacterRunesState: CharacterRunes = {
     elementalRunesAffinity: [],
     formAndPowerRunesAffinities: [],
     elemental: {
-        wind: 0,
+        air: 0,
         earth: 0,
         water: 0,
-        fire: 0,
+        'fire/sky': 0,
         moon: 0,
         darkness: 0,
     },
@@ -21,6 +23,8 @@ export const defaultCharacterRunesState = {
         disorder: 50,
         death: 50,
         fertility: 50,
+        illusion: 50,
+        truth: 50,
     },
     form: {
         beast: 50,
@@ -28,19 +32,25 @@ export const defaultCharacterRunesState = {
     }
 };
 
-export const characterRunesReducer = (state = defaultCharacterRunesState, action) => {
+export const characterRunesReducer = (state = defaultCharacterRunesState, action): CharacterRunes  => {
+
+    let runeName, value;
+
     switch (action.type) {
-        case SET_RUNE_ACTION:
-            const {runeType, runeName, value} = action.payload;
-            if (state[action.payload.runeType][action.payload.runeName] === undefined) {
-                console.error('wrong rune type or name:', runeType, runeName);
+        case SET_ELEMENTAL_RUNE_ACTION:
+
+            runeName = action.payload.runeName;
+            value = action.payload.value;
+
+            if (state.elemental[action.payload.runeName] === undefined) {
+                console.error('wrong rune type or name:', runeName);
                 return state;
             }
 
             return {
                 ...state,
-                [action.payload.runeType]: {
-                    ...state[action.payload.runeType],
+                elemental: {
+                    ...state.elemental,
                     [action.payload.runeName]: value,
                 }
             };
@@ -67,6 +77,49 @@ export const characterRunesReducer = (state = defaultCharacterRunesState, action
                 ...state,
                 elementalRunesAffinity: [...state.elementalRunesAffinity]
             };
+
+        case SET_POWER_RUNE_ACTION:
+
+            runeName = action.payload.runeName;
+            value = action.payload.value;
+
+            if (state.power[action.payload.runeName] === undefined) {
+                console.error('wrong rune type or name:', runeName);
+                return state;
+            }
+
+            return {
+                ...state,
+                power: {
+                    ...state.power,
+                    [action.payload.runeName]: value,
+                }
+            };
+
+        case SET_FORM_RUNE_ACTION:
+
+            runeName = action.payload.runeName;
+            value = action.payload.value;
+
+            if (state.form[action.payload.runeName] === undefined) {
+                console.error('wrong rune type or name:', runeName);
+                return state;
+            }
+
+            return {
+                ...state,
+                form: {
+                    ...state.form,
+                    [action.payload.runeName]: value,
+                }
+            };
+
+        case SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION:
+            return {
+                ...state,
+                formAndPowerRunesAffinities: [...action.payload]
+            };
+
         default:
             return state;
     }

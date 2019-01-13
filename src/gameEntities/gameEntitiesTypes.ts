@@ -9,7 +9,7 @@ export interface Homeland {
 export interface Cult {
     title: CultTitle;
     description: string;
-    runes: RuneElemental & RunePower & RuneForm[]
+    runes: RuneElementalTitle & RunePowerTitle & RuneFormTitle[]
 }
 
 export type CultTitle =
@@ -68,7 +68,79 @@ export type OccupationTitle =
     'Thief' |
     'Warrior';
 
-export type RuneType = 'elemental' | 'power' | 'form';
-export type RuneElemental = 'wind' | 'earth' | 'water' | 'fire' | 'moon' | 'darkness';
-export type RunePower = 'stasis' | 'movement' | 'harmony' | 'disorder' | 'death' | 'fertility';
-export type RuneForm = 'beast' | 'man';
+export enum Characteristic {
+    STR = 'STR',
+    SIZ = 'SIZ',
+    DEX = 'DEX',
+    CON = 'CON',
+    INT = 'INT',
+    CHA = 'CHA',
+    POW = 'POW'
+}
+
+export enum SkillCategory {
+    MANIPULATION,
+    MAGIC,
+    AGILITY,
+    STEALTH,
+    COMMUNICATION,
+    PERCEPTION
+}
+
+export enum RuneType {
+    ELEMENTAL = 'elemental',
+    POWER = 'power',
+    FORM = 'form',
+}
+
+export enum RuneElementalTitle {
+    WIND = 'wind',
+    EARTH = 'earth',
+    WATER = 'water',
+    FIRE = 'fire/sky',
+    MOON = 'moon',
+    DARKNESS = 'darkness',
+    AIR = 'air',
+}
+
+export enum RunePowerTitle {
+    STASIS = 'stasis',
+    MOVEMENT = 'movement',
+    HARMONY = 'harmony',
+    DISORDER = 'disorder',
+    DEATH = 'death',
+    FERTILITY = 'fertility',
+    TRUTH = 'truth',
+    ILLUSION = 'illusion',
+}
+
+export enum RuneFormTitle {
+    BEAST = 'beast',
+    MAN = 'man',
+}
+
+export interface RuneElemental {
+    title: RuneElementalTitle,
+    description: string,
+    characteristic: Characteristic,
+    personality: string,
+    sense: string,
+    skillCategory: SkillCategory,
+    weapon: string,
+    organs: string,
+    color: string,
+    metal: string,
+    phyla: string
+}
+
+export interface RuneForm {
+    title: RuneFormTitle,
+    description: string,
+    oppositeRune: RuneFormTitle,
+}
+
+export interface RunePower {
+    title: RunePowerTitle,
+    description: string,
+    oppositeRune: RunePowerTitle,
+}

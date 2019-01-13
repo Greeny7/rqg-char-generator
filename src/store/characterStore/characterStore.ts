@@ -3,11 +3,12 @@ import {CharacterStore} from "./characterStoreTypes";
 import {combineReducers} from "redux";
 import {SET_HOMELAND_TITLE_ACTION, SET_PASSIONS_ACTION} from "./characterActions";
 import {
-    SET_PRIMARY_RUNE_TITLE_ACTION, SET_RUNE_ACTION,
-    SET_SECONDARY_RUNE_TITLE_ACTION, SET_TERTIARY_RUNE_TITLE_ACTION
+    SET_PRIMARY_RUNE_TITLE_ACTION, SET_ELEMENTAL_RUNE_ACTION,
+    SET_SECONDARY_RUNE_TITLE_ACTION, SET_TERTIARY_RUNE_TITLE_ACTION, SET_POWER_RUNE_ACTION, SET_FORM_RUNE_ACTION,
+    SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION
 } from "./characterRunesStore/characterRunesActions";
 
-export const defaultCharacterState = {
+export const defaultCharacterState: CharacterStore = {
     name: null,
     homeland: null,
     passions: [],
@@ -32,7 +33,10 @@ export const characterReducer = (state = defaultCharacterState, action): Charact
         case SET_PRIMARY_RUNE_TITLE_ACTION:
         case SET_SECONDARY_RUNE_TITLE_ACTION:
         case SET_TERTIARY_RUNE_TITLE_ACTION:
-        case SET_RUNE_ACTION:
+        case SET_ELEMENTAL_RUNE_ACTION:
+        case SET_POWER_RUNE_ACTION:
+        case SET_FORM_RUNE_ACTION:
+        case SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION:
             return {
                 ...state,
                 runes: characterRunesReducer(state.runes, action)

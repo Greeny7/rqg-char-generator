@@ -59,7 +59,6 @@ class CharacterDetailsView extends React.Component<CharacterDetailsProps> {
 
     renderRunes() {
         const {elemental, form, power} = this.props.character.runes;
-        console.log(elemental);
 
         return <div>
             <h4>Runes</h4>

@@ -5,65 +5,67 @@ import {setStep} from "../../../../store/stepsStore/stepsActions";
 import {Step} from "../../../../store/stepsStore/stepsStoreTypes";
 import {
     selectPrimaryElementalRune,
-    selectSecondaryElementalRune, selectTertiaryElementalRune
+    selectSecondaryElementalRune, selectTertiaryElementalRune, toggleFormRuneAffinity, togglePowerRuneAffinity
 } from "../../../../store/characterStore/characterRunesStore/characterRunesThunks";
-import {RuneElemental} from "../../../../gameEntities/gameEntitiesTypes";
+import {RuneElementalTitle, RuneFormTitle, RunePowerTitle} from "../../../../gameEntities/gameEntitiesTypes";
+import {getRunesList} from "../../../../gameEntities/gameEntities";
 const CSS = require('./RunesStep.css');
 
 interface RunesStepOwnProps {}
 
 interface RunesStepPropsFromState {
-    elementalRunesAffinity
+    elementalRunesAffinity,
+    formAndPowerRunesAffinities
 }
 
 interface RunesStepDispatchProps {
-    selectPrimaryElementalRune(runeName: RuneElemental): void;
-    selectSecondaryElementalRune(runeName: RuneElemental): void;
-    selectTertiaryElementalRune(runeName: RuneElemental): void;
+    selectPrimaryElementalRune(runeName: RuneElementalTitle): void;
+    selectSecondaryElementalRune(runeName: RuneElementalTitle): void;
+    selectTertiaryElementalRune(runeName: RuneElementalTitle): void;
+    toggleFormRuneAffinity(runeName: RuneFormTitle): void;
+    togglePowerRuneAffinity(runeName: RunePowerTitle): void;
     nextStep(): void;
 }
 
 type RunesStepProps = RunesStepOwnProps & RunesStepPropsFromState & RunesStepDispatchProps;
 
 const mapStateToProps = (state: GlobalState): RunesStepPropsFromState => ({
-    elementalRunesAffinity: state.character.runes.elementalRunesAffinity
+    elementalRunesAffinity: state.character.runes.elementalRunesAffinity,
+    formAndPowerRunesAffinities: state.character.runes.formAndPowerRunesAffinities,
 });
 
 const mapDispatchToProps = (dispatch): RunesStepDispatchProps => ({
-    selectPrimaryElementalRune: (runeName: RuneElemental) => dispatch(selectPrimaryElementalRune(runeName)),
-    selectSecondaryElementalRune: (runeName: RuneElemental) => dispatch(selectSecondaryElementalRune(runeName)),
-    selectTertiaryElementalRune: (runeName: RuneElemental) => dispatch(selectTertiaryElementalRune(runeName)),
+    selectPrimaryElementalRune: (runeName: RuneElementalTitle) => dispatch(selectPrimaryElementalRune(runeName)),
+    selectSecondaryElementalRune: (runeName: RuneElementalTitle) => dispatch(selectSecondaryElementalRune(runeName)),
+    selectTertiaryElementalRune: (runeName: RuneElementalTitle) => dispatch(selectTertiaryElementalRune(runeName)),
+    toggleFormRuneAffinity: (runeName: RuneFormTitle) => dispatch(toggleFormRuneAffinity(runeName)),
+    togglePowerRuneAffinity: (runeName: RunePowerTitle) => dispatch(togglePowerRuneAffinity(runeName)),
     nextStep: () => dispatch(setStep(Step.HOMELAND))
 });
 
-class RunesStepView extends React.Component<RunesStepProps> {
+class RunesStepView extends React.PureComponent<RunesStepProps> {
     render() {
         const nextStepReady =
             this.props.elementalRunesAffinity[0] &&
             this.props.elementalRunesAffinity[1] &&
-            this.props.elementalRunesAffinity[2];
-        const runes: RuneElemental[] = [
-            'wind',
-            'earth',
-            'water',
-            'fire',
-            'moon',
-            'darkness',
-        ];
+            this.props.elementalRunesAffinity[2] &&
+            this.props.formAndPowerRunesAffinities.length === 2;
+        const elementalRunes: RuneElementalTitle[] = getRunesList().elemental.map(rune => rune.title);
+        const powerRunes: RunePowerTitle[] = getRunesList().power.map(rune => rune.title);
+        const formRunes: RuneFormTitle[] = getRunesList().form.map(rune => rune.title);
         return <div>
-            <h4>Choose primary elemental rune:</h4>
+            <h4>Choose primary elemental rune (+60%):</h4>
             <ul>
-                {runes
+                {elementalRunes
                     .map((runeName, index) => {
                         const unactive =
                             runeName === this.props.elementalRunesAffinity[1] ||
                             runeName === this.props.elementalRunesAffinity[2];
                         const selected = runeName === this.props.elementalRunesAffinity[0];
-                        const active = !unactive && !selected;
 
                         return <li
                             key={index}
-                            onClick={() => active && this.props.selectPrimaryElementalRune(runeName)}
+                            onClick={() => !unactive && this.props.selectPrimaryElementalRune(runeName)}
                             className={unactive ? CSS.unactive : ''}
                         >
                             {runeName} {selected && <b> - selected</b>}
@@ -72,19 +74,18 @@ class RunesStepView extends React.Component<RunesStepProps> {
                 )}
             </ul>
 
-            <h4>Choose secondary elemental rune:</h4>
+            <h4>Choose secondary elemental rune (+40%):</h4>
             <ul>
-                {runes
+                {elementalRunes
                     .map((runeName, index) => {
                             const unactive =
                                 runeName === this.props.elementalRunesAffinity[0] ||
                                 runeName === this.props.elementalRunesAffinity[2];
                             const selected = runeName === this.props.elementalRunesAffinity[1];
-                            const active = !unactive && !selected;
 
                             return <li
                                 key={index}
-                                onClick={() => active && this.props.selectSecondaryElementalRune(runeName)}
+                                onClick={() => !unactive && this.props.selectSecondaryElementalRune(runeName)}
                                 className={unactive ? CSS.unactive : ''}
                             >
                                 {runeName} {selected && <b> - selected</b>}
@@ -92,19 +93,19 @@ class RunesStepView extends React.Component<RunesStepProps> {
                         }
                     )}
             </ul>
-            <h4>Choose tertiary elemental rune:</h4>
+
+            <h4>Choose tertiary elemental rune (+20%):</h4>
             <ul>
-                {runes
+                {elementalRunes
                     .map((runeName, index) => {
                             const unactive =
                                 runeName === this.props.elementalRunesAffinity[0] ||
                                 runeName === this.props.elementalRunesAffinity[1];
                             const selected = runeName === this.props.elementalRunesAffinity[2];
-                        const active = !unactive && !selected;
 
                             return <li
                                 key={index}
-                                onClick={() => active && this.props.selectTertiaryElementalRune(runeName)}
+                                onClick={() => !unactive && this.props.selectTertiaryElementalRune(runeName)}
                                 className={unactive ? CSS.unactive : ''}
                             >
                                 {runeName} {selected && <b> - selected</b>}
@@ -112,6 +113,47 @@ class RunesStepView extends React.Component<RunesStepProps> {
                         }
                     )}
             </ul>
+
+            <h4>Choose power/form rune affinities:</h4>
+            <ul>
+                {powerRunes
+                    .map((runeName, index) => {
+                            const selected = this.props.formAndPowerRunesAffinities.includes(runeName);
+                            const oppositeRune = getRunesList().power.find(r => r.title === runeName).oppositeRune;
+                            const oppositeSelected = this.props.formAndPowerRunesAffinities.includes(oppositeRune);
+                            const unactive =
+                                oppositeSelected ||
+                                (!selected && this.props.formAndPowerRunesAffinities.length >= 2);
+
+                            return <li
+                                key={index}
+                                onClick={() => !unactive && this.props.togglePowerRuneAffinity(runeName)}
+                                className={unactive ? CSS.unactive : ''}
+                            >
+                                {runeName} {selected && <b> - selected</b>}
+                        </li>
+                    }
+                )}
+                {formRunes
+                    .map((runeName, index) => {
+                            const selected = this.props.formAndPowerRunesAffinities.includes(runeName);
+                            const oppositeRune = getRunesList().form.find(r => r.title === runeName).oppositeRune;
+                            const oppositeSelected = this.props.formAndPowerRunesAffinities.includes(oppositeRune);
+                            const unactive =
+                                oppositeSelected ||
+                                (!selected && this.props.formAndPowerRunesAffinities.length >= 2);
+
+                            return <li
+                                key={index}
+                                onClick={() => !unactive && this.props.toggleFormRuneAffinity(runeName)}
+                                className={unactive ? CSS.unactive : ''}
+                            >
+                                {runeName} {selected && <b> - selected</b>}
+                            </li>
+                        }
+                    )}
+            </ul>
+
             {nextStepReady && <button type={'button'} onClick={this.props.nextStep}>next</button>}
         </div>;
     }
