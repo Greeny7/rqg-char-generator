@@ -69,7 +69,7 @@ export type OccupationTitle =
     'Thief' |
     'Warrior';
 
-export enum Characteristic {
+export enum Characteristics {
     STR = 'STR',
     SIZ = 'SIZ',
     DEX = 'DEX',
@@ -124,7 +124,7 @@ export interface RuneElemental {
     title: RuneElementalTitle,
     type: RuneType.ELEMENTAL,
     description: string,
-    characteristic: Characteristic,
+    characteristic: Characteristics,
     personality: string,
     sense: string,
     skillCategory: SkillCategory,

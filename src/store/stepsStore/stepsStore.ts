@@ -2,7 +2,7 @@ import {Step, StepsStore} from "./stepsStoreTypes";
 import {SET_STEP_ACTION} from "./stepsActions";
 
 export const defaultStepsState: StepsStore = {
-    currentStep: Step.HOMELAND,
+    currentStep: Step.CHARACTERISTICS,
 };
 
 export const stepsReducer = (state = defaultStepsState, action): StepsStore => {

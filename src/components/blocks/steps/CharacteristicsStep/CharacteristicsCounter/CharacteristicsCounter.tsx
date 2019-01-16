@@ -1,16 +1,16 @@
 import * as React from "react";
-const CSS = require('./RuneCounter.css');
+const CSS = require('./CharacteristicsCounter.css');
 
-interface RuneCounterProps {
+interface CharacteristicsCounterProps {
     title: string,
-    value: string,
+    value: number,
     onIncrease(name: string): any,
     onReduce(name: string): any,
     canBeIncremented: boolean,
     canBeDecremented: boolean
 }
 
-export const RuneCounter: React.SFC<RuneCounterProps> = (props: RuneCounterProps) => {
+export const CharacteristicsCounter: React.SFC<CharacteristicsCounterProps> = (props: CharacteristicsCounterProps) => {
     return <li>
         {props.title}:
         <button

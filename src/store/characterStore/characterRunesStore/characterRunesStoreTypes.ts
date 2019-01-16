@@ -5,8 +5,8 @@ export interface CharacterRunes {
     formAndPowerRunesAffinities: (RunePowerTitle | RuneFormTitle)[];
     elemental: {
         air: number,
-        earth: number,
         water: number,
+        earth: number,
         'fire/sky': number,
         moon: number,
         darkness: number,

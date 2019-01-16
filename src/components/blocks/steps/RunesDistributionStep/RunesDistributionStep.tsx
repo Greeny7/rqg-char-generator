@@ -44,7 +44,7 @@ const mapDispatchToProps = (dispatch): RunesDistributionStepDispatchProps => ({
     setElementalRune: (runeName: RuneElementalTitle, value: number) => dispatch(setElementalRune(runeName, value)),
     setPowerRune: (runeName: RunePowerTitle, value: number) => dispatch(setAndBalancePowerRune(runeName, value)),
     setFormRune: (runeName: RuneFormTitle, value: number) => dispatch(setAndBalanceFormRune(runeName, value)),
-    nextStep: () => dispatch(setStep(Step.HOMELAND)),
+    nextStep: () => dispatch(setStep(Step.CHARACTERISTICS)),
     prevStep: () => dispatch(setStep(Step.RUNES)),
 });
 
@@ -98,8 +98,8 @@ class RunesDistributionStepView extends React.PureComponent<RunesDistributionSte
             onIncrease={this.incrementPowerRune}
             onReduce={this.decrementPowerRune}
             value={currentValue}
-            decreaseActive={decreaseActive}
-            increaseActive={increaseActive}
+            canBeDecremented={decreaseActive}
+            canBeIncremented={increaseActive}
         />
     }
 
@@ -113,8 +113,8 @@ class RunesDistributionStepView extends React.PureComponent<RunesDistributionSte
             onIncrease={this.incrementFormRune}
             onReduce={this.decrementFormRune}
             value={currentValue}
-            decreaseActive={decreaseActive}
-            increaseActive={increaseActive}
+            canBeDecremented={decreaseActive}
+            canBeIncremented={increaseActive}
         />
     }
 
@@ -128,8 +128,8 @@ class RunesDistributionStepView extends React.PureComponent<RunesDistributionSte
             onIncrease={this.incrementElementalRune}
             onReduce={this.decrementElementalRune}
             value={currentValue}
-            decreaseActive={decreaseActive}
-            increaseActive={increaseActive}
+            canBeDecremented={decreaseActive}
+            canBeIncremented={increaseActive}
         />
     }
 

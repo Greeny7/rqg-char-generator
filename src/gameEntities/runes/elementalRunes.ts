@@ -1,4 +1,4 @@
-import {Characteristic, RuneElemental, RuneElementalTitle, RuneType, SkillCategory} from "../gameEntitiesTypes";
+import {Characteristics, RuneElemental, RuneElementalTitle, RuneType, SkillCategory} from "../gameEntitiesTypes";
 
 export const runeWater: RuneElemental = {
     type: RuneType.ELEMENTAL,
@@ -9,7 +9,7 @@ without darkness. It is the element of the
 seas, lakes, and rivers, and all the waters
 of the world.
     `,
-    characteristic: Characteristic.DEX,
+    characteristic: Characteristics.DEX,
     personality: `
 To have a strong affinity with Water is to be
 mercurial, capricious, and mutable. 
@@ -35,7 +35,7 @@ endless freezing darkness that preceded
 creation and still lurks and hungers under
 the earth and seas.
     `,
-    characteristic: Characteristic.SIZ,
+    characteristic: Characteristics.SIZ,
     personality: `
 To have a strong affinity with Darkness is to
 be cold, cruel, patient, and secretive.
@@ -62,7 +62,7 @@ life and gifts, sometimes terrifying and deadly.
 It is the Rune of physical things, and all things that live and
 grow atop and within the earth.
     `,
-    characteristic: Characteristic.CON,
+    characteristic: Characteristics.CON,
     personality: `
 To have a strong affinity with Earth is to be
 pragmatic, prudent, worldly, and sensual. 
@@ -87,7 +87,7 @@ Sky Dome and the stars, with its greatest
 manifestation being the fiery Sun that brings
 light and warmth to the world.
     `,
-    characteristic: Characteristic.INT,
+    characteristic: Characteristics.INT,
     personality: `
 To have a strong affinity with Fire/Sky means
 to be pure, chaste, idealistic, and perceptive.
@@ -111,7 +111,7 @@ of the world and the savior of the cosmos. It
 is the element of weather, storm, wind, and
 the Middle Air.
     `,
-    characteristic: Characteristic.STR,
+    characteristic: Characteristics.STR,
     personality: `
 To have a strong affinity with Air means to be
 passionate, violent, proud, and unpredictable.
@@ -137,7 +137,7 @@ cycles laid upon the surface of this world. The
 Moon accepts Chaos as part of the Cosmic Balance, and
 thereby earns the enmity of much of the rest of the world.
     `,
-    characteristic: Characteristic.POW,
+    characteristic: Characteristics.POW,
     personality: `
 To have a strong affinity with the Moon Rune
 is to seek spiritual liberation from the bondage of fear

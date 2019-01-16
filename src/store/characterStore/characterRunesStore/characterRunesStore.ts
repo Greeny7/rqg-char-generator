@@ -10,8 +10,8 @@ export const defaultCharacterRunesState: CharacterRunes = {
     formAndPowerRunesAffinities: [],
     elemental: {
         air: 0,
-        earth: 0,
         water: 0,
+        earth: 0,
         'fire/sky': 0,
         moon: 0,
         darkness: 0,
