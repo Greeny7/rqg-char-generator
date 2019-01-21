@@ -6,6 +6,7 @@ import {
 import {RuneElementalTitle, RuneFormTitle, RunePowerTitle, RuneType} from "../../../gameEntities/gameEntitiesTypes";
 import {getRunesList} from "../../../gameEntities/gameEntities";
 
+// only on initial character creation; later primary, secondary and tertiary runes could be changed
 export function selectPrimaryElementalRune(runeName: RuneElementalTitle) {
     return function(dispatch, getState: () => GlobalState) {
         const state = getState();
@@ -33,6 +34,7 @@ export function selectPrimaryElementalRune(runeName: RuneElementalTitle) {
     }
 }
 
+// only on initial character creation; later primary, secondary and tertiary runes could be changed
 export function selectSecondaryElementalRune(runeName: RuneElementalTitle) {
     return function(dispatch, getState: () => GlobalState) {
         const state = getState();
@@ -59,6 +61,7 @@ export function selectSecondaryElementalRune(runeName: RuneElementalTitle) {
     }
 }
 
+// only on initial character creation; later primary, secondary and tertiary runes could be changed
 export function selectTertiaryElementalRune(runeName: RuneElementalTitle) {
     return function(dispatch, getState: () => GlobalState) {
         const state = getState();
