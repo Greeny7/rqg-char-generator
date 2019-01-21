@@ -15,7 +15,7 @@ interface RunesStepOwnProps {}
 
 interface RunesStepPropsFromState {
     elementalRunesAffinity,
-    formAndPowerRunesAffinities
+    formAndPowerRunesAffinities,
 }
 
 interface RunesStepDispatchProps {

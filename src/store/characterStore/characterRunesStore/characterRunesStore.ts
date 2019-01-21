@@ -1,7 +1,8 @@
 import {
     SET_PRIMARY_RUNE_TITLE_ACTION, SET_ELEMENTAL_RUNE_ACTION, SET_SECONDARY_RUNE_TITLE_ACTION,
     SET_TERTIARY_RUNE_TITLE_ACTION, SET_POWER_RUNE_ACTION, SET_FORM_RUNE_ACTION,
-    SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION
+    SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION, ADJUST_ELEMENTAL_RUNE_ACTION, ADJUST_POWER_RUNE_ACTION,
+    ADJUST_FORM_RUNE_ACTION, SET_RUNES
 } from "./characterRunesActions";
 import {CharacterRunes} from "./characterRunesStoreTypes";
 
@@ -27,8 +28,8 @@ export const defaultCharacterRunesState: CharacterRunes = {
         truth: 50,
     },
     form: {
-        beast: 50,
         man: 50,
+        beast: 50,
     }
 };
 
@@ -37,23 +38,6 @@ export const characterRunesReducer = (state = defaultCharacterRunesState, action
     let runeName, value;
 
     switch (action.type) {
-        case SET_ELEMENTAL_RUNE_ACTION:
-
-            runeName = action.payload.runeName;
-            value = action.payload.value;
-
-            if (state.elemental[action.payload.runeName] === undefined) {
-                console.error('wrong rune type or name:', runeName);
-                return state;
-            }
-
-            return {
-                ...state,
-                elemental: {
-                    ...state.elemental,
-                    [action.payload.runeName]: value,
-                }
-            };
         case SET_PRIMARY_RUNE_TITLE_ACTION:
             state.elementalRunesAffinity[0] = action.payload;
 
@@ -78,15 +62,23 @@ export const characterRunesReducer = (state = defaultCharacterRunesState, action
                 elementalRunesAffinity: [...state.elementalRunesAffinity]
             };
 
-        case SET_POWER_RUNE_ACTION:
+        case SET_ELEMENTAL_RUNE_ACTION:
 
             runeName = action.payload.runeName;
             value = action.payload.value;
 
-            if (state.power[action.payload.runeName] === undefined) {
-                console.error('wrong rune type or name:', runeName);
-                return state;
-            }
+            return {
+                ...state,
+                elemental: {
+                    ...state.elemental,
+                    [action.payload.runeName]: value,
+                }
+            };
+
+        case SET_POWER_RUNE_ACTION:
+
+            runeName = action.payload.runeName;
+            value = action.payload.value;
 
             return {
                 ...state,
@@ -101,11 +93,6 @@ export const characterRunesReducer = (state = defaultCharacterRunesState, action
             runeName = action.payload.runeName;
             value = action.payload.value;
 
-            if (state.form[action.payload.runeName] === undefined) {
-                console.error('wrong rune type or name:', runeName);
-                return state;
-            }
-
             return {
                 ...state,
                 form: {
@@ -114,10 +101,67 @@ export const characterRunesReducer = (state = defaultCharacterRunesState, action
                 }
             };
 
+        case ADJUST_ELEMENTAL_RUNE_ACTION:
+
+            runeName = action.payload.runeName;
+            value = action.payload.value;
+
+            return {
+                ...state,
+                elemental: {
+                    ...state.elemental,
+                    [runeName]: state.elemental[runeName] + value,
+                }
+            };
+
+        case ADJUST_POWER_RUNE_ACTION:
+
+            runeName = action.payload.runeName;
+            value = action.payload.value;
+
+            return {
+                ...state,
+                power: {
+                    ...state.power,
+                    [runeName]: state.power[runeName] + value,
+                }
+            };
+
+        case ADJUST_FORM_RUNE_ACTION:
+
+            runeName = action.payload.runeName;
+            value = action.payload.value;
+
+            return {
+                ...state,
+                form: {
+                    ...state.form,
+                    [runeName]: state.form[runeName] + value,
+                }
+            };
+
         case SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION:
             return {
                 ...state,
                 formAndPowerRunesAffinities: [...action.payload]
+            };
+
+        case SET_RUNES:
+            const {elemental, power, form} = action.payload;
+            return {
+                ...state,
+                elemental: {
+                    ...state.elemental,
+                    ...elemental
+                },
+                power: {
+                    ...state.power,
+                    ...power
+                },
+                form: {
+                    ...state.form,
+                    ...form
+                }
             };
 
         default:

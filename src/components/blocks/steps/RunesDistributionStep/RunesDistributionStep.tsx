@@ -1,19 +1,29 @@
 import * as React from "react";
 import { connect } from 'react-redux';
 import {GlobalState} from "../../../../store/storeTypes";
-import {setStep} from "../../../../store/stepsStore/stepsActions";
+import {
+    decrementFreeRunePoints, incrementFreeRunePoints, nextStep, prevStep, resetInitialRuneValues, setFreeRunePoints,
+    setStep
+} from "../../../../store/stepsStore/stepsActions";
 import {Step} from "../../../../store/stepsStore/stepsStoreTypes";
-import {RuneElementalTitle, RuneFormTitle, RunePowerTitle} from "../../../../gameEntities/gameEntitiesTypes";
+import {RuneElementalTitle, RuneFormTitle, RunePowerTitle, RuneType} from "../../../../gameEntities/gameEntitiesTypes";
 import {getRunesList} from "../../../../gameEntities/gameEntities";
 import {
     setElementalRune, setFormRune,
-    setPowerRune
+    setPowerRune, setRunes
 } from "../../../../store/characterStore/characterRunesStore/characterRunesActions";
 import {RuneCounter} from "./RuneCounter/RuneCounter";
 import {
     setAndBalanceFormRune,
     setAndBalancePowerRune
 } from "../../../../store/characterStore/characterRunesStore/characterRunesThunks";
+import {MAX_FREE_RUNE_POINTS} from "../../../../store/stepsStore/stepsStore";
+import {objectForEach} from "../../../../utils/iterateObject";
+import {saveInitialRuneValues} from "../../../../store/stepsStore/stepsThunks";
+import {
+    ElementalRunesStore,
+    FormRunesStore, PowerRunesStore
+} from "../../../../store/characterStore/characterRunesStore/characterRunesStoreTypes";
 const CSS = require('./RunesDistributionStep.css');
 
 interface RunesDistributionStepOwnProps {}
@@ -21,7 +31,9 @@ interface RunesDistributionStepOwnProps {}
 interface RunesDistributionStepPropsFromState {
     elementalRunes,
     powerRunes,
-    formRunes
+    formRunes,
+    freePoints,
+    initialRunesValue
 }
 
 interface RunesDistributionStepDispatchProps {
@@ -30,6 +42,16 @@ interface RunesDistributionStepDispatchProps {
     setFormRune(runeName: RuneFormTitle, value: number): void;
     nextStep(): void;
     prevStep(): void;
+    incrementFreeRunePoints(): void;
+    decrementFreeRunePoints(): void;
+    setFreeRunePoints(value: number): void;
+    saveInitialRuneValues(): void;
+    resetInitialRuneValues(): void;
+    setRunes: (
+        elementalRunes: ElementalRunesStore,
+        powerRunes: PowerRunesStore,
+        formRunes: FormRunesStore,
+    ) => void
 }
 
 type RunesDistributionStepProps = RunesDistributionStepOwnProps & RunesDistributionStepPropsFromState & RunesDistributionStepDispatchProps;
@@ -38,60 +60,55 @@ const mapStateToProps = (state: GlobalState): RunesDistributionStepPropsFromStat
     elementalRunes: state.character.runes.elemental,
     powerRunes: state.character.runes.power,
     formRunes: state.character.runes.form,
+    freePoints: state.steps.runesDistributionStep.freePoints,
+    initialRunesValue: state.steps.runesDistributionStep.initialRunesValue
 });
 
 const mapDispatchToProps = (dispatch): RunesDistributionStepDispatchProps => ({
     setElementalRune: (runeName: RuneElementalTitle, value: number) => dispatch(setElementalRune(runeName, value)),
     setPowerRune: (runeName: RunePowerTitle, value: number) => dispatch(setAndBalancePowerRune(runeName, value)),
     setFormRune: (runeName: RuneFormTitle, value: number) => dispatch(setAndBalanceFormRune(runeName, value)),
-    nextStep: () => dispatch(setStep(Step.CHARACTERISTICS)),
-    prevStep: () => dispatch(setStep(Step.RUNES)),
+    setRunes: (
+        elementalRunes: ElementalRunesStore,
+        powerRunes: PowerRunesStore,
+        formRunes: FormRunesStore,
+    ) => dispatch(setRunes(elementalRunes, powerRunes, formRunes)),
+    nextStep: () => dispatch(nextStep()),
+    prevStep: () => dispatch(prevStep()),
+    incrementFreeRunePoints: () => dispatch(incrementFreeRunePoints()),
+    decrementFreeRunePoints: () => dispatch(decrementFreeRunePoints()),
+    setFreeRunePoints: (value: number) => dispatch(setFreeRunePoints(value)),
+    saveInitialRuneValues: () => dispatch(saveInitialRuneValues()),
+    resetInitialRuneValues: () => dispatch(resetInitialRuneValues()),
 });
 
-interface RunesDistributionStepViewState {
-    freePoints: number;
-}
-
-class RunesDistributionStepView extends React.PureComponent<RunesDistributionStepProps, RunesDistributionStepViewState> {
-
-    initialRunesValues: any = {
-        elemental: {},
-        power: {},
-        form: {}
-    };
-
-    state = {
-        freePoints: 50
-    };
+class RunesDistributionStepView extends React.PureComponent<RunesDistributionStepProps> {
 
     componentDidMount() {
-        this.initialRunesValues.elemental = {...this.props.elementalRunes};
-        this.initialRunesValues.power = {...this.props.powerRunes};
-        this.initialRunesValues.form = {...this.props.formRunes};
+        if (this.props.initialRunesValue.elemental.air === null) {
+            this.props.saveInitialRuneValues();
+        }
     }
 
     undo = () => {
-        this.resetRunes();
+        this.resetValues();
+        this.props.resetInitialRuneValues();
         this.props.prevStep();
     }
 
-    resetRunes = () => {
-        Object.keys(this.initialRunesValues.elemental).forEach((runeName: RuneElementalTitle) => {
-            this.props.setElementalRune(runeName, this.initialRunesValues.elemental[runeName]);
-        });
-        Object.keys(this.initialRunesValues.form).forEach((runeName: RuneFormTitle) => {
-            this.props.setFormRune(runeName, this.initialRunesValues.form[runeName]);
-        });
-        Object.keys(this.initialRunesValues.power).forEach((runeName: RunePowerTitle) => {
-            this.props.setPowerRune(runeName, this.initialRunesValues.power[runeName]);
-        });
-        this.setState({freePoints: 50});
+    resetValues = () => {
+        this.props.setRunes(
+            this.props.initialRunesValue.elemental,
+            this.props.initialRunesValue.power,
+            this.props.initialRunesValue.form,
+        );
+        this.props.setFreeRunePoints(MAX_FREE_RUNE_POINTS);
     }
 
     renderPowerRune(runeName) {
         const currentValue = this.props.powerRunes[runeName];
-        const increaseActive = this.state.freePoints > 0 && currentValue < 100;
-        const decreaseActive = currentValue > 0 && currentValue > this.initialRunesValues.power[runeName];
+        const increaseActive = this.props.freePoints > 0 && currentValue < 100;
+        const decreaseActive = currentValue > 0 && currentValue > this.props.initialRunesValue.power[runeName];
         return <RuneCounter
             key={runeName}
             title={runeName}
@@ -105,8 +122,8 @@ class RunesDistributionStepView extends React.PureComponent<RunesDistributionSte
 
     renderFormRune(runeName) {
         const currentValue = this.props.formRunes[runeName];
-        const increaseActive = this.state.freePoints > 0 && currentValue < 100;
-        const decreaseActive = currentValue > 0 && currentValue > this.initialRunesValues.form[runeName];
+        const increaseActive = this.props.freePoints > 0 && currentValue < 100;
+        const decreaseActive = currentValue > 0 && currentValue > this.props.initialRunesValue.form[runeName];
         return <RuneCounter
             key={runeName}
             title={runeName}
@@ -120,8 +137,8 @@ class RunesDistributionStepView extends React.PureComponent<RunesDistributionSte
 
     renderElementalRune(runeName) {
         const currentValue = this.props.elementalRunes[runeName];
-        const increaseActive = this.state.freePoints > 0;
-        const decreaseActive = currentValue > 0 && currentValue > this.initialRunesValues.elemental[runeName];
+        const increaseActive = this.props.freePoints > 0;
+        const decreaseActive = currentValue > 0 && currentValue > this.props.initialRunesValue.elemental[runeName];
         return <RuneCounter
             key={runeName}
             title={runeName}
@@ -136,49 +153,41 @@ class RunesDistributionStepView extends React.PureComponent<RunesDistributionSte
     decrementPowerRune = (runeName: RunePowerTitle) => {
         const currentValue = this.props.powerRunes[runeName];
         this.props.setPowerRune(runeName, currentValue - 1);
-        this.incrementFreePoints();
+        this.props.incrementFreeRunePoints();
     }
 
     incrementPowerRune = (runeName: RunePowerTitle) => {
         const currentValue = this.props.powerRunes[runeName];
-        this.decrementFreePoints();
+        this.props.decrementFreeRunePoints();
         this.props.setPowerRune(runeName, currentValue + 1);
     }
 
     decrementFormRune = (runeName: RuneFormTitle) => {
         const currentValue = this.props.formRunes[runeName];
         this.props.setFormRune(runeName, currentValue - 1);
-        this.incrementFreePoints();
+        this.props.incrementFreeRunePoints();
     }
 
     incrementFormRune = (runeName: RuneFormTitle) => {
         const currentValue = this.props.formRunes[runeName];
-        this.decrementFreePoints();
+        this.props.decrementFreeRunePoints();
         this.props.setFormRune(runeName, currentValue + 1);
     }
 
     decrementElementalRune = (runeName: RuneElementalTitle) => {
         const currentValue = this.props.elementalRunes[runeName];
         this.props.setElementalRune(runeName, currentValue - 1);
-        this.incrementFreePoints();
+        this.props.incrementFreeRunePoints();
     }
 
     incrementElementalRune = (runeName: RuneElementalTitle) => {
         const currentValue = this.props.elementalRunes[runeName];
-        this.decrementFreePoints();
+        this.props.decrementFreeRunePoints();
         this.props.setElementalRune(runeName, currentValue + 1);
     }
 
-    incrementFreePoints() {
-        this.setState({freePoints: this.state.freePoints + 1});
-    }
-
-    decrementFreePoints() {
-        this.setState({freePoints: this.state.freePoints - 1});
-    }
-
     render() {
-        const nextStepReady = this.state.freePoints === 0;
+        const nextStepReady = this.props.freePoints === 0;
         const runesList = getRunesList();
 
         const elementalRunes: RuneElementalTitle[] = runesList.elemental.map(rune => rune.title);
@@ -187,9 +196,9 @@ class RunesDistributionStepView extends React.PureComponent<RunesDistributionSte
 
         return <div>
 
-            <h4>Free points: {this.state.freePoints}</h4>
+            <h4>Free points: {this.props.freePoints}</h4>
 
-            <button onClick={this.resetRunes}>reset</button>
+            <button onClick={this.resetValues}>reset</button>
 
             <h4>Elemental runes</h4>
             <ul>

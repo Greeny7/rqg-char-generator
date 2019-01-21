@@ -1,6 +1,6 @@
 import { esrolia } from './homelands/esrolia';
 import { sartar } from './homelands/sartar';
-import {Homeland, RuneElemental, RuneForm, RunePower} from "./gameEntitiesTypes";
+import {Homeland, HomelandTitle, RuneElemental, RuneForm, RunePower} from "./gameEntitiesTypes";
 import {cloneObject} from "../utils/cloneObject";
 import {
     runeDeath, runeDisorder, runeFertility, runeHarmony, runeIllusioin, runeMovement, runeStasis,
@@ -8,7 +8,9 @@ import {
 } from "./runes/powerRunes";
 import {runeBeast, runeMan} from "./runes/formRunes";
 import {runeAir, runeDarkness, runeEarth, runeFire, runeMoon, runeWater} from "./runes/elementalRunes";
+import {praxBisonRiders} from "./homelands/praxBisonRiders";
 
+// TODO to map
 interface GameEntities {
     homelands: Homeland[],
     runes: {
@@ -19,7 +21,7 @@ interface GameEntities {
 }
 
 const gameEntities: GameEntities = {
-    homelands: [esrolia, sartar],
+    homelands: [sartar, esrolia, praxBisonRiders],
     runes: {
         power: [
             runeStasis,
@@ -48,6 +50,11 @@ const gameEntities: GameEntities = {
 
 export function getHomelandsList() {
     return cloneObject(gameEntities.homelands);
+}
+
+export function getHomeland(title: HomelandTitle) {
+    const homeland = gameEntities.homelands.find(item => item.title === title);
+    return cloneObject(homeland);
 }
 
 export function getRunesList() {

@@ -58,6 +58,15 @@ class HomelandStepView extends React.Component<HomelandStepProps, HomelandSelect
                 </li>)}
             </ul>
             <p>rune bonus: <b>{homeland.runeBonus.title}</b>: +{homeland.runeBonus.value}%</p>
+            {homeland.characteristicsBonus && <>
+                <p>Characteristics bonus:</p>
+                <ul>
+                    {Object.keys(homeland.characteristicsBonus).map((charKey,index) => {
+                        return <li key={index}><b>{charKey}</b>: {homeland.characteristicsBonus[charKey]}</li>
+                    })}
+                </ul>
+            </>
+            }
         </>
     };
 

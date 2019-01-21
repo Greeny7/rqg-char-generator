@@ -1,5 +1,29 @@
+import {
+    ElementalRunesStore, FormRunesStore,
+    PowerRunesStore
+} from "../characterStore/characterRunesStore/characterRunesStoreTypes";
+import {CharacteristicsStore} from "../characterStore/characterStoreTypes";
+
 export interface StepsStore {
-    currentStep: Step
+    currentStep: Step,
+    runesDistributionStep: {
+        freePoints: number,
+        initialRunesValue: {
+            elemental: ElementalRunesStore,
+            power: PowerRunesStore,
+            form: FormRunesStore
+        }
+    }
+    characteristicsStep: {
+        initialCharacteristics: CharacteristicsStore,
+        freePoints: number,
+        mode: CharacteristicsMode,
+    }
+}
+
+export enum CharacteristicsMode {
+    RANDOM,
+    FIXED_NUMBER
 }
 
 export enum Step {

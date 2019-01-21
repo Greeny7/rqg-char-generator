@@ -1,10 +1,13 @@
+import {CharacteristicsStore} from "../store/characterStore/characterStoreTypes";
+
 export interface Homeland {
     title: HomelandTitle;
     description: {title: string, text: string}[];
     commonCults: CultTitle[];
     sugggestedOccupations: OccupationTitle[];
     passions: Passion[];
-    runeBonus: {title: RuneElementalTitle, value: number}
+    runeBonus: {title: RuneElementalTitle, value: number},
+    characteristicsBonus?: CharacteristicsStore
 }
 
 export interface Cult {
@@ -36,11 +39,11 @@ export type HomelandTitle =
     'Sartar' |
     'Esrolia' |
     'Grazelands' |
-    'Prax Bison' |
-    'Prax High Llama' |
-    'Prax Impala' |
-    'Prax Pol-Joni' |
-    'Prax Sable Riders' |
+    'Praxian tribes - Bison Riders' |
+    'Praxian tribes - High Llama' |
+    'Praxian tribes - Impala' |
+    'Praxian tribes - Pol-Joni' |
+    'Praxian tribes - Sable Riders' |
     'Lunar Tarsh' |
     'Old Tarsh';
 

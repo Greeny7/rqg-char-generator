@@ -83,12 +83,26 @@ class CharacterDetailsView extends React.Component<CharacterDetailsProps> {
         </div>
     }
 
+    renderCharacteristics() {
+        const {characteristics} = this.props.character;
+
+        return <div>
+            <h4>Characteristics</h4>
+            <ul>
+                {Object.keys(characteristics).map((charKey, index) =>
+                    <li key={index}>{charKey}: {characteristics[charKey]}</li>
+                )}
+            </ul>
+        </div>
+    }
+
     render() {
         return <>
             <h2>Character</h2>
             {this.renderHomeland()}
-            {this.renderPassions()}
+            {this.renderCharacteristics()}
             {this.renderRunes()}
+            {this.renderPassions()}
         </>
     }
 }

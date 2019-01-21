@@ -21,7 +21,7 @@ export const CharacteristicsCounter: React.SFC<CharacteristicsCounterProps> = (p
             reduce
         </button>
 
-        {props.value} %
+        {props.value}
 
         <button
             className={!props.canBeIncremented ? CSS.unactive : ''}
