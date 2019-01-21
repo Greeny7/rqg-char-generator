@@ -97,6 +97,7 @@ class CharacteristicsStepView extends React.PureComponent<CharacteristicsStepPro
         this.props.setFreeCharacteristicsPoints(0);
     }
 
+    // TODO move logic to thunk
     randomDistribution() {
         this.reset();
         const newCharRoll = {
@@ -121,6 +122,7 @@ class CharacteristicsStepView extends React.PureComponent<CharacteristicsStepPro
         }
     }
 
+    // TODO move logic to thunk
     fixedDistribution() {
         this.reset();
         this.props.setCharacteristicsMode(CharacteristicsMode.FIXED_NUMBER);
