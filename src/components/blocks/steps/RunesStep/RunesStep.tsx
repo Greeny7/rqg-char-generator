@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import {GlobalState} from "../../../../store/storeTypes";
 import {setStep} from "../../../../store/stepsStore/stepsActions";
 import {Step} from "../../../../store/stepsStore/stepsStoreTypes";
-import {
-    selectPrimaryElementalRune,
-    selectSecondaryElementalRune, selectTertiaryElementalRune, toggleFormRuneAffinity, togglePowerRuneAffinity
-} from "../../../../store/characterStore/characterRunesStore/characterRunesThunks";
 import {RuneElementalTitle, RuneFormTitle, RunePowerTitle} from "../../../../gameEntities/gameEntitiesTypes";
 import {getRunesList} from "../../../../gameEntities/gameEntities";
+import {
+    selectPrimaryElementalRune, selectSecondaryElementalRune,
+    selectTertiaryElementalRune, toggleFormRuneAffinity, togglePowerRuneAffinity
+} from "../../../../store/stepsStore/stepsThunks";
 const CSS = require('./RunesStep.css');
 
 interface RunesStepOwnProps {}
@@ -31,8 +31,8 @@ interface RunesStepDispatchProps {
 type RunesStepProps = RunesStepOwnProps & RunesStepPropsFromState & RunesStepDispatchProps;
 
 const mapStateToProps = (state: GlobalState): RunesStepPropsFromState => ({
-    elementalRunesAffinity: state.character.runes.elementalRunesAffinity,
-    formAndPowerRunesAffinities: state.character.runes.formAndPowerRunesAffinities,
+    elementalRunesAffinity: state.steps.runesStep.elementalRunesAffinity,
+    formAndPowerRunesAffinities: state.steps.runesStep.formAndPowerRunesAffinities,
 });
 
 const mapDispatchToProps = (dispatch): RunesStepDispatchProps => ({

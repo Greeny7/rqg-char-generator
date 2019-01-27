@@ -8,6 +8,10 @@ import {
     PowerRunesStore
 } from "../characterStore/characterRunesStore/characterRunesStoreTypes";
 import {CharacteristicsStore} from "../characterStore/characterStoreTypes";
+import {
+    SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION, SET_PRIMARY_RUNE_TITLE_ACTION, SET_SECONDARY_RUNE_TITLE_ACTION,
+    SET_TERTIARY_RUNE_TITLE_ACTION
+} from "../characterStore/characterRunesStore/characterRunesActions";
 
 export const SET_STEP = 'SET_STEP';
 export const PREV_STEP = 'PREV_STEP';
@@ -91,4 +95,24 @@ export const setFreeCharacteristicsPoints = (value: number) => ({
 export const setCharacteristicsMode = (mode: CharacteristicsMode) => ({
     type: SET_CHARACTERISTICS_MODE,
     payload: mode
-})
+});
+
+export const setPrimaryRuneTitle = (runeName: RuneElementalTitle) => ({
+    type: SET_PRIMARY_RUNE_TITLE_ACTION,
+    payload: runeName,
+});
+
+export const setSecondaryRuneTitle = (runeName: RuneElementalTitle) => ({
+    type: SET_SECONDARY_RUNE_TITLE_ACTION,
+    payload: runeName,
+});
+
+export const setTertiaryRuneTitle = (runeName: RuneElementalTitle) => ({
+    type: SET_TERTIARY_RUNE_TITLE_ACTION,
+    payload: runeName,
+});
+
+export const addPowerOrFromRunesAffinity = (runeNames: (RunePowerTitle | RuneFormTitle)[]) => ({
+    type: SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION,
+    payload: runeNames,
+});

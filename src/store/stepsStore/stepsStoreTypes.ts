@@ -3,9 +3,14 @@ import {
     PowerRunesStore
 } from "../characterStore/characterRunesStore/characterRunesStoreTypes";
 import {CharacteristicsStore} from "../characterStore/characterStoreTypes";
+import {RuneElementalTitle, RuneFormTitle, RunePowerTitle} from "../../gameEntities/gameEntitiesTypes";
 
 export interface StepsStore {
     currentStep: Step,
+    runesStep: {
+        elementalRunesAffinity: RuneElementalTitle[];
+        formAndPowerRunesAffinities: (RunePowerTitle | RuneFormTitle)[];
+    }
     runesDistributionStep: {
         freePoints: number,
         initialRunesValue: {

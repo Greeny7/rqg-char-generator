@@ -10,6 +10,11 @@ import {
     SET_STEP
 } from "./stepsActions";
 import {Characteristics} from "../../gameEntities/gameEntitiesTypes";
+import {
+    SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION,
+    SET_PRIMARY_RUNE_TITLE_ACTION,
+    SET_SECONDARY_RUNE_TITLE_ACTION, SET_TERTIARY_RUNE_TITLE_ACTION
+} from "../characterStore/characterRunesStore/characterRunesActions";
 
 export const MAX_FREE_RUNE_POINTS = 50;
 export const MAX_FREE_CHARACTERISTICS_POINTS = 95;
@@ -51,6 +56,10 @@ const nullCharacteristics = {
 
 export const defaultStepsState: StepsStore = {
     currentStep: Step.HOMELAND,
+    runesStep: {
+        elementalRunesAffinity: [],
+        formAndPowerRunesAffinities: [],
+    },
     runesDistributionStep: {
         freePoints: MAX_FREE_RUNE_POINTS,
         initialRunesValue: {
@@ -209,17 +218,47 @@ export const stepsReducer = (state = defaultStepsState, action): StepsStore => {
                 }
             };
 
-        case SET_CHARACTERISTICS_MODE:
+        case SET_PRIMARY_RUNE_TITLE_ACTION:
+            state.runesStep.elementalRunesAffinity[0] = action.payload;
+
             return {
                 ...state,
-                characteristicsStep: {
-                    ...state.characteristicsStep,
-                    mode: action.payload
+                runesStep: {
+                    ...state.runesStep,
+                    elementalRunesAffinity: [...state.runesStep.elementalRunesAffinity]
                 }
             };
 
+        case SET_SECONDARY_RUNE_TITLE_ACTION:
+            state.runesStep.elementalRunesAffinity[1] = action.payload;
 
+            return {
+                ...state,
+                runesStep: {
+                    ...state.runesStep,
+                    elementalRunesAffinity: [...state.runesStep.elementalRunesAffinity]
+                }
+            };
 
+        case SET_TERTIARY_RUNE_TITLE_ACTION:
+            state.runesStep.elementalRunesAffinity[2] = action.payload;
+
+            return {
+                ...state,
+                runesStep: {
+                    ...state.runesStep,
+                    elementalRunesAffinity: [...state.runesStep.elementalRunesAffinity]
+                }
+            };
+
+        case SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION:
+            return {
+                ...state,
+                runesStep: {
+                    ...state.runesStep,
+                    formAndPowerRunesAffinities: [...action.payload]
+                }
+            };
 
         default:
             return state

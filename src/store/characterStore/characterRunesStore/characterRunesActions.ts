@@ -46,26 +46,6 @@ export const adjustFormRune = (runeName: RuneFormTitle, value: number) => ({
     payload: {runeName, value}
 });
 
-export const setPrimaryRuneTitle = (runeName: RuneElementalTitle) => ({
-    type: SET_PRIMARY_RUNE_TITLE_ACTION,
-    payload: runeName,
-});
-
-export const setSecondaryRuneTitle = (runeName: RuneElementalTitle) => ({
-    type: SET_SECONDARY_RUNE_TITLE_ACTION,
-    payload: runeName,
-});
-
-export const setTertiaryRuneTitle = (runeName: RuneElementalTitle) => ({
-    type: SET_TERTIARY_RUNE_TITLE_ACTION,
-    payload: runeName,
-});
-
-export const addPowerOrFromRunesAffinity = (runeNames: (RunePowerTitle | RuneFormTitle)[]) => ({
-    type: SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION,
-    payload: runeNames,
-});
-
 export const setRunes = (
     elemental: ElementalRunesStore,
     power: PowerRunesStore,

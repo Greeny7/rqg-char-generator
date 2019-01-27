@@ -1,8 +1,4 @@
-import {RuneElementalTitle, RuneFormTitle, RunePowerTitle} from "../../../gameEntities/gameEntitiesTypes";
-
 export interface CharacterRunes {
-    elementalRunesAffinity: RuneElementalTitle[];
-    formAndPowerRunesAffinities: (RunePowerTitle | RuneFormTitle)[];
     elemental: ElementalRunesStore,
     power: PowerRunesStore,
     form: FormRunesStore

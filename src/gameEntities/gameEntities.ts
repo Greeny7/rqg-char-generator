@@ -42,8 +42,8 @@ const gameEntities: GameEntities = {
             runeWater,
             runeEarth,
             runeFire,
-            runeDarkness,
             runeMoon,
+            runeDarkness,
         ],
     }
 };

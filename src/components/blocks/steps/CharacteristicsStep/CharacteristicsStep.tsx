@@ -8,10 +8,6 @@ import {
 } from "../../../../store/stepsStore/stepsActions";
 import {CharacteristicsMode, Step} from "../../../../store/stepsStore/stepsStoreTypes";
 import {
-    selectPrimaryElementalRune,
-    selectSecondaryElementalRune, selectTertiaryElementalRune, toggleFormRuneAffinity, togglePowerRuneAffinity
-} from "../../../../store/characterStore/characterRunesStore/characterRunesThunks";
-import {
     Characteristics, RuneElementalTitle, RuneFormTitle,
     RunePowerTitle
 } from "../../../../gameEntities/gameEntitiesTypes";

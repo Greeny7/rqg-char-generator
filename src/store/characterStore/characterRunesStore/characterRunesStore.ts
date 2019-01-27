@@ -7,8 +7,6 @@ import {
 import {CharacterRunes} from "./characterRunesStoreTypes";
 
 export const defaultCharacterRunesState: CharacterRunes = {
-    elementalRunesAffinity: [],
-    formAndPowerRunesAffinities: [],
     elemental: {
         air: 0,
         water: 0,
@@ -20,12 +18,12 @@ export const defaultCharacterRunesState: CharacterRunes = {
     power: {
         stasis: 50,
         movement: 50,
+        truth: 50,
+        illusion: 50,
+        fertility: 50,
+        death: 50,
         harmony: 50,
         disorder: 50,
-        death: 50,
-        fertility: 50,
-        illusion: 50,
-        truth: 50,
     },
     form: {
         man: 50,
@@ -38,30 +36,6 @@ export const characterRunesReducer = (state = defaultCharacterRunesState, action
     let runeName, value;
 
     switch (action.type) {
-        case SET_PRIMARY_RUNE_TITLE_ACTION:
-            state.elementalRunesAffinity[0] = action.payload;
-
-            return {
-                ...state,
-                elementalRunesAffinity: [...state.elementalRunesAffinity]
-            };
-
-        case SET_SECONDARY_RUNE_TITLE_ACTION:
-            state.elementalRunesAffinity[1] = action.payload;
-
-            return {
-                ...state,
-                elementalRunesAffinity: [...state.elementalRunesAffinity]
-            };
-
-        case SET_TERTIARY_RUNE_TITLE_ACTION:
-            state.elementalRunesAffinity[2] = action.payload;
-
-            return {
-                ...state,
-                elementalRunesAffinity: [...state.elementalRunesAffinity]
-            };
-
         case SET_ELEMENTAL_RUNE_ACTION:
 
             runeName = action.payload.runeName;
@@ -138,12 +112,6 @@ export const characterRunesReducer = (state = defaultCharacterRunesState, action
                     ...state.form,
                     [runeName]: state.form[runeName] + value,
                 }
-            };
-
-        case SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION:
-            return {
-                ...state,
-                formAndPowerRunesAffinities: [...action.payload]
             };
 
         case SET_RUNES:
