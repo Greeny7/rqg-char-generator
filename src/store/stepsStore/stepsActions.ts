@@ -30,6 +30,8 @@ export const DECREMENT_FREE_CHARACTERISTICS_POINTS = 'DECREMENT_FREE_CHARACTERIS
 export const INCREMENT_FREE_CHARACTERISTICS_POINTS = 'INCREMENT_FREE_CHARACTERISTICS_POINTS';
 export const SET_FREE_CHARACTERISTICS_POINTS = 'SET_FREE_CHARACTERISTICS_POINTS';
 export const SET_CHARACTERISTICS_MODE = 'SET_CHARACTERISTICS_MODE';
+export const SET_PRIMARY_RUNE = 'SET_PRIMARY_RUNE';
+export const SET_SECONDARY_RUNE = 'SET_SECONDARY_RUNE';
 
 export const setStep = (step: Step) => ({
     type: SET_STEP,
@@ -115,4 +117,14 @@ export const setTertiaryRuneTitle = (runeName: RuneElementalTitle) => ({
 export const addPowerOrFromRunesAffinity = (runeNames: (RunePowerTitle | RuneFormTitle)[]) => ({
     type: SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION,
     payload: runeNames,
+});
+
+export const setPrimaryRune = (runeName: RuneElementalTitle) => ({
+    type: SET_PRIMARY_RUNE,
+    payload: runeName,
+});
+
+export const setSecondaryRune = (runeName: RuneElementalTitle) => ({
+    type: SET_SECONDARY_RUNE,
+    payload: runeName,
 });

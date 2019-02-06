@@ -23,6 +23,8 @@ export interface StepsStore {
         initialCharacteristics: CharacteristicsStore,
         freePoints: number,
         mode: CharacteristicsMode,
+        elementalRunesAffinity: RuneElementalTitle[];
+        // runesCharacteristicsBonus:
     }
 }
 

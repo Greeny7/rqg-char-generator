@@ -5,28 +5,53 @@ import {ElementalRunesStore} from "./characterRunesStoreTypes";
 
 const elementalRunes = (state: GlobalState): ElementalRunesStore => state.character.runes.elemental;
 
-export const getAffinityRunes = createSelector(
+export const getMaxRunes = createSelector(
     elementalRunes,
     (runes: ElementalRunesStore) => {
         const sortedRuneNames: any = Object.keys(runes).sort((runeName1, runeName2) => {
             return runes[runeName2] - runes[runeName1];
         });
 
-        if (runes[sortedRuneNames[0]] === runes[sortedRuneNames[1]] && runes[sortedRuneNames[0]] !== 0) {
-            sortedRuneNames[0] = [sortedRuneNames.splice(1, 1)[0], sortedRuneNames[0]];
-        }
+        const sortedRunesMixedArray = sortedRuneNames.reduce((acc, runeName, index) => {
+            const runeValue = runes[runeName];
+            const prevRuneName = sortedRuneNames[index - 1];
+            const prevRuneValue = runes[prevRuneName];
+            if (prevRuneName && prevRuneValue === runeValue) {
+                acc[acc.length - 1].push(runeName);
+            } else {
+                acc.push([runeName]);
+            }
+            return acc;
+        }, []);
 
-        if (runes[sortedRuneNames[1]] === runes[sortedRuneNames[2]] && runes[sortedRuneNames[1]] !== 0) {
-            sortedRuneNames[1] = [sortedRuneNames.splice(2, 1)[0], sortedRuneNames[1]];
+        if (sortedRunesMixedArray[0].length > 2) {
+            return sortedRunesMixedArray.slice(0, 1);
+        } else if (sortedRunesMixedArray[0].length === 2 || sortedRunesMixedArray[1].length >= 2) {
+            return sortedRunesMixedArray.slice(0, 2);
         }
-
-        if (Array.isArray(sortedRuneNames[0]) || Array.isArray(sortedRuneNames[1])) {
-            return sortedRuneNames.slice(0, 2);
-        }
-        return sortedRuneNames.slice(0, 3);
+        return sortedRunesMixedArray.slice(0, 3);
     }
-)
+);
 
-//[{name, value}, {name, value}, {name, value}]
-//[[{name, value}, {name, value}], {name, value}]
-//[[{name, value}, {name, value}], [{name, value}, {name, value}]]
+// 1 > 2 > 3
+//[
+//      [{name, value}],
+//      [{name, value}],
+//      [{name, value}]
+//]
+
+// 1 === 2, 3 < 2
+//[
+//      [ {name, value}, {name, value} ],
+//      [ {name, value}]
+//]
+
+// 1 === 2, 3 === 4
+//[     [{name, value}, {name, value}],
+//      [{name, value}, {name, value}]
+//]
+
+// 1 === 2 === 3
+//[
+//      [{name, value}, {name, value}, {name, value}]
+//]

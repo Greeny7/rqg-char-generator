@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {GlobalState} from "../../../store/storeTypes";
 import {CharacterStore} from "../../../store/characterStore/characterStoreTypes";
 import {RuneElementalTitle} from "../../../gameEntities/gameEntitiesTypes";
-import {getAffinityRunes} from "../../../store/characterStore/characterRunesStore/characterRunesSelectors";
+import {getMaxRunes} from "../../../store/characterStore/characterRunesStore/characterRunesSelectors";
 // import { makeLovelyAction } from '../../../store/actions';
 const CSS = require('./CharacterDetails.css');
 
@@ -24,7 +24,7 @@ type CharacterDetailsProps = CharacterDetailsOwnProps & CharacterDetailsPropsFro
 const mapStateToProps = (state: GlobalState): CharacterDetailsPropsFromState => {
     return {
         character: state.character,
-        runeAffinities: getAffinityRunes(state)
+        runeAffinities: getMaxRunes(state)
     };
 };
 

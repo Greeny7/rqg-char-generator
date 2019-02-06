@@ -6,7 +6,7 @@ import {
     RESET_INITIAL_CHARACTERISTICS,
     RESET_INITIAL_RUNES, SET_CHARACTERISTICS_MODE, SET_FREE_CHARACTERISTICS_POINTS, SET_FREE_RUNE_POINTS,
     SET_INITIAL_CHARACTERISTICS,
-    SET_INITIAL_RUNES,
+    SET_INITIAL_RUNES, SET_PRIMARY_RUNE, SET_SECONDARY_RUNE,
     SET_STEP
 } from "./stepsActions";
 import {Characteristics} from "../../gameEntities/gameEntitiesTypes";
@@ -67,6 +67,7 @@ export const defaultStepsState: StepsStore = {
         }
     },
     characteristicsStep: {
+        elementalRunesAffinity: [null, null],
         initialCharacteristics: nullCharacteristics,
         freePoints: 0,
         mode: null
@@ -75,6 +76,7 @@ export const defaultStepsState: StepsStore = {
 
 export const stepsReducer = (state = defaultStepsState, action): StepsStore => {
     let currentStepIndex;
+    let newElementalRunesAffinity;
 
     switch (action.type) {
         case SET_STEP:
@@ -257,6 +259,34 @@ export const stepsReducer = (state = defaultStepsState, action): StepsStore => {
                 runesStep: {
                     ...state.runesStep,
                     formAndPowerRunesAffinities: [...action.payload]
+                }
+            };
+
+        case SET_PRIMARY_RUNE:
+            newElementalRunesAffinity = state.characteristicsStep.elementalRunesAffinity;
+            if (newElementalRunesAffinity[1] === action.payload) {
+                newElementalRunesAffinity[1] = newElementalRunesAffinity[0];
+            }
+            newElementalRunesAffinity[0] = action.payload;
+            return {
+                ...state,
+                characteristicsStep: {
+                    ...state.characteristicsStep,
+                    elementalRunesAffinity: [...newElementalRunesAffinity]
+                }
+            };
+
+        case SET_SECONDARY_RUNE:
+            newElementalRunesAffinity = state.characteristicsStep.elementalRunesAffinity;
+            if (newElementalRunesAffinity[0] === action.payload) {
+                newElementalRunesAffinity[0] = newElementalRunesAffinity[1];
+            }
+            newElementalRunesAffinity[1] = action.payload;
+            return {
+                ...state,
+                characteristicsStep: {
+                    ...state.characteristicsStep,
+                    elementalRunesAffinity: [...newElementalRunesAffinity]
                 }
             };
 
