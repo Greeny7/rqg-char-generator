@@ -1,15 +1,33 @@
 import {GlobalState} from "../storeTypes";
 import {
     addPowerOrFromRunesAffinity,
-    setInitialCharacteristics, setInitialRunes, setPrimaryRuneTitle, setSecondaryRuneTitle,
+    choosePrimaryRuneBonusChar,
+    chooseSecondaryRuneBonusChar,
+    removePrimaryRuneBonusChar,
+    removeSecondaryRuneBonusChar,
+    setInitialCharacteristics,
+    setInitialRunes,
+    setPrimaryRuneTitle,
+    setSecondaryRuneTitle,
     setTertiaryRuneTitle
-} from "./stepsActions";
+} from './stepsActions';
 import {
     setAndBalanceFormRune,
     setAndBalancePowerRune
 } from "../characterStore/characterRunesStore/characterRunesThunks";
-import {RuneElementalTitle, RuneFormTitle, RunePowerTitle} from "../../gameEntities/gameEntitiesTypes";
+import {
+    Characteristics,
+    RuneElementalTitle,
+    RuneFormTitle,
+    RunePowerTitle
+} from '../../gameEntities/gameEntitiesTypes';
 import {adjustElementalRune} from "../characterStore/characterRunesStore/characterRunesActions";
+import {
+    POWER_FORM_RUNE_AFFINITY_BONUS,
+    PRIMARY_RUNE_BONUS,
+    SECONDARY_RUNE_BONUS,
+    TERTIARY_RUNE_BONUS
+} from '../../gameEntities/rules';
 
 
 export const saveInitialRuneValues = () => (dispatch, getState: () => GlobalState) => {
@@ -21,11 +39,6 @@ export const saveInitialCharacteristicsValues = () => (dispatch, getState: () =>
     const {characteristics} = getState().character;
     dispatch(setInitialCharacteristics(characteristics));
 };
-
-const PRIMARY_RUNE_BONUS = 60;
-const SECONDARY_RUNE_BONUS = 40;
-const TERTIARY_RUNE_BONUS = 20;
-const POWER_FORM_RUNE_AFFINITY_BONUS = 25;
 
 export function selectPrimaryElementalRune(runeName: RuneElementalTitle) {
     return function(dispatch, getState: () => GlobalState) {
@@ -103,7 +116,7 @@ export function togglePowerRuneAffinity(runeTitle: RunePowerTitle) {
             affinitiesList.splice(affinitiesList.indexOf(runeTitle), 1);
 
             dispatch(setAndBalancePowerRune(runeTitle, oldValue - POWER_FORM_RUNE_AFFINITY_BONUS));
-            dispatch(addPowerOrFromRunesAffinity([...affinitiesList]))
+            dispatch(addPowerOrFromRunesAffinity([...affinitiesList]));
             return;
         }
 
@@ -134,10 +147,45 @@ export function toggleFormRuneAffinity(runeTitle: RuneFormTitle) {
         if (affinitiesList.length >= 2) {
             return;
         }
+    }
+}
 
-        const oldValue = getState().character.runes.form[runeTitle];
-        affinitiesList.push(runeTitle);
-        dispatch(setAndBalanceFormRune(runeTitle, oldValue + POWER_FORM_RUNE_AFFINITY_BONUS));
-        dispatch(addPowerOrFromRunesAffinity([...affinitiesList]))
+export function selectPrimaryRuneBonusChar(char: Characteristics) {
+    return function(dispatch, getState: () => GlobalState) {
+        const state = getState();
+        const currentPrimaryRuneBonusChar = state.steps.characteristicsStep.runesCharacteristicsBonus[0];
+
+        if (char === currentPrimaryRuneBonusChar) {
+            return;
+        }
+
+        if (!char && currentPrimaryRuneBonusChar) {
+            dispatch(removePrimaryRuneBonusChar(currentPrimaryRuneBonusChar));
+        } else if (char && !currentPrimaryRuneBonusChar) {
+            dispatch(choosePrimaryRuneBonusChar(char));
+        } else if (char && currentPrimaryRuneBonusChar ) {
+            dispatch(removePrimaryRuneBonusChar(currentPrimaryRuneBonusChar));
+            dispatch(choosePrimaryRuneBonusChar(char));
+        }
+    }
+}
+
+export function selectSecondaryRuneBonusChar(char: Characteristics) {
+    return function(dispatch, getState: () => GlobalState) {
+        const state = getState();
+        const currentSecondaryRuneBonusChar = state.steps.characteristicsStep.runesCharacteristicsBonus[1];
+
+        if (char === currentSecondaryRuneBonusChar) {
+            return;
+        }
+
+        if (!char && currentSecondaryRuneBonusChar) {
+            dispatch(removeSecondaryRuneBonusChar(currentSecondaryRuneBonusChar));
+        } else if (char && !currentSecondaryRuneBonusChar) {
+            dispatch(chooseSecondaryRuneBonusChar(char));
+        } else if (char && currentSecondaryRuneBonusChar ) {
+            dispatch(removeSecondaryRuneBonusChar(currentSecondaryRuneBonusChar));
+            dispatch(chooseSecondaryRuneBonusChar(char));
+        }
     }
 }

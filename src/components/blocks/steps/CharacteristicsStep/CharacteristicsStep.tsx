@@ -1,25 +1,32 @@
-import * as React from "react";
+import * as React from 'react';
 import { connect } from 'react-redux';
-import {GlobalState} from "../../../../store/storeTypes";
+import { GlobalState } from '../../../../store/storeTypes';
 import {
-    decrementFreeCharacteristicsPoints, incrementFreeCharacteristicsPoints, nextStep, prevStep,
-    resetInitialCharacteristics, setCharacteristicsMode, setFreeCharacteristicsPoints, setPrimaryRune, setSecondaryRune,
-    setStep
-} from "../../../../store/stepsStore/stepsActions";
-import {CharacteristicsMode, Step} from "../../../../store/stepsStore/stepsStoreTypes";
+    decrementFreeCharacteristicsPoints,
+    incrementFreeCharacteristicsPoints,
+    nextStep,
+    prevStep,
+    resetInitialCharacteristics,
+    setCharacteristicsMode,
+    setFreeCharacteristicsPoints,
+    setPrimaryRune,
+    setSecondaryRune
+} from '../../../../store/stepsStore/stepsActions';
+import { CharacteristicsMode } from '../../../../store/stepsStore/stepsStoreTypes';
+import { Characteristics, RuneElementalTitle } from '../../../../gameEntities/gameEntitiesTypes';
+import { getRunesList } from '../../../../gameEntities/gameEntities';
+import { CharacteristicsStore } from '../../../../store/characterStore/characterStoreTypes';
+import { setCharacteristics } from '../../../../store/characterStore/characterActions';
+import { CharacteristicsCounter } from './CharacteristicsCounter/CharacteristicsCounter';
+import { rollD6 } from '../../../../utils/diceRolls';
 import {
-    Characteristics, RuneElementalTitle, RuneFormTitle,
-    RunePowerTitle
-} from "../../../../gameEntities/gameEntitiesTypes";
-import {getRunesList} from "../../../../gameEntities/gameEntities";
-import {CharacteristicsStore} from "../../../../store/characterStore/characterStoreTypes";
-import {setCharacteristics} from "../../../../store/characterStore/characterActions";
-import {CharacteristicsCounter} from "./CharacteristicsCounter/CharacteristicsCounter";
-import {rollD6} from "../../../../utils/diceRolls";
-import {number} from "prop-types";
-import {saveInitialCharacteristicsValues} from "../../../../store/stepsStore/stepsThunks";
-import {getMaxRunes} from "../../../../store/characterStore/characterRunesStore/characterRunesSelectors";
+    saveInitialCharacteristicsValues,
+    selectPrimaryRuneBonusChar,
+    selectSecondaryRuneBonusChar
+} from '../../../../store/stepsStore/stepsThunks';
+import { getMaxRunes } from '../../../../store/characterStore/characterRunesStore/characterRunesSelectors';
 import { MAX_FREE_CHARACTERISTICS_POINTS } from '../../../../gameEntities/rules';
+
 const CSS = require('./CharacteristicsStep.css');
 
 interface CharacteristicsStepOwnProps {}
@@ -31,6 +38,7 @@ interface CharacteristicsStepPropsFromState {
     mode: CharacteristicsMode,
     maxRunes: RuneElementalTitle[][],
     runesAffinity: RuneElementalTitle[],
+    runesCharacteristicsBonus: Characteristics[],
 }
 
 interface CharacteristicsStepDispatchProps {
@@ -43,6 +51,8 @@ interface CharacteristicsStepDispatchProps {
     setCharacteristicsMode(mode: CharacteristicsMode): void;
     setPrimaryRune(runeName: RuneElementalTitle): void;
     setSecondaryRune(runeName: RuneElementalTitle): void;
+    selectPrimaryRuneBonusChar(char: Characteristics): void;
+    selectSecondaryRuneBonusChar(char: Characteristics): void;
     nextStep(): void;
     prevStep(): void;
 }
@@ -55,7 +65,8 @@ const mapStateToProps = (state: GlobalState): CharacteristicsStepPropsFromState 
     initialCharacteristics: state.steps.characteristicsStep.initialCharacteristics,
     mode: state.steps.characteristicsStep.mode,
     maxRunes: getMaxRunes(state),
-    runesAffinity: state.steps.characteristicsStep.elementalRunesAffinity
+    runesAffinity: state.steps.characteristicsStep.elementalRunesAffinity,
+    runesCharacteristicsBonus: state.steps.characteristicsStep.runesCharacteristicsBonus
 });
 
 const mapDispatchToProps = (dispatch): CharacteristicsStepDispatchProps => ({
@@ -68,6 +79,8 @@ const mapDispatchToProps = (dispatch): CharacteristicsStepDispatchProps => ({
     setCharacteristicsMode: (mode: CharacteristicsMode) => dispatch(setCharacteristicsMode(mode)),
     setPrimaryRune: (runeName: RuneElementalTitle) => dispatch(setPrimaryRune(runeName)),
     setSecondaryRune: (runeName: RuneElementalTitle) => dispatch(setSecondaryRune(runeName)),
+    selectPrimaryRuneBonusChar: (char: Characteristics) => dispatch(selectPrimaryRuneBonusChar(char)),
+    selectSecondaryRuneBonusChar: (char: Characteristics) => dispatch(selectSecondaryRuneBonusChar(char)),
     nextStep: () => dispatch(nextStep()),
     prevStep: () => dispatch(prevStep()),
 });
@@ -79,27 +92,11 @@ class CharacteristicsStepView extends React.PureComponent<CharacteristicsStepPro
             this.props.saveInitialCharacteristicsValues();
 
         }
-
-        console.log(this.props.runesAffinity[0]);
-        if (!this.props.runesAffinity[0]) {
-            const initialPrimaryRune = this.props.maxRunes[0][0];
-            this.props.setPrimaryRune(initialPrimaryRune);
-        }
-
-        if (!this.props.runesAffinity[1]) {
-            const initialSecondaryRune =
-                this.props.maxRunes[0].length > 1
-                    ? this.props.maxRunes[0][1]
-                    : this.props.maxRunes[1][0];
-            this.props.setSecondaryRune(initialSecondaryRune);
-        }
     }
 
     undo = () => {
         this.resetCharacteristics();
         this.props.resetInitialCharacteristics();
-        this.props.setSecondaryRune(null);
-        this.props.setPrimaryRune(null);
         this.props.prevStep();
     };
 
@@ -150,63 +147,6 @@ class CharacteristicsStepView extends React.PureComponent<CharacteristicsStepPro
         this.props.setFreeCharacteristicsPoints(MAX_FREE_CHARACTERISTICS_POINTS);
     }
 
-    renderRunesAffinity() {
-        const primaryRunesChoice = this.props.maxRunes[0];
-        const secondaryRunesChoice =
-            primaryRunesChoice.length > 1
-            ? primaryRunesChoice
-            : this.props.maxRunes[1];
-
-        const [currentPrimaryRune, currentSecondaryRune]  = this.props.runesAffinity;
-
-        return <ul>
-            <li>
-                <b>Primary rune: </b>
-                {primaryRunesChoice.map((runeName, index) => {
-                        const nextRune = primaryRunesChoice[index + 1];
-                        const selected = currentPrimaryRune === runeName;
-                        return <span key={index}>
-                            <span
-                                onClick={() => this.props.setPrimaryRune(runeName)}
-                                className={selected ? CSS.selected : ''}
-                            >
-                                    {runeName}
-                            </span>
-                            {nextRune && ' or '}
-                        </span>
-                    })
-                }
-                {}
-            </li>
-            <li>
-                <b>Secondary rune: </b>
-                {secondaryRunesChoice.map((runeName, index) => {
-                    const nextRune = secondaryRunesChoice[index + 1];
-                    const selected = currentSecondaryRune === runeName;
-                    return <span key={index}>
-                        <span
-                            onClick={() => this.props.setSecondaryRune(runeName)}
-                            className={selected ? CSS.selected : ''}
-                        >
-                                {runeName}
-                        </span>
-                        {nextRune && ' or '}
-                    </span>
-                })}
-            </li>
-        </ul>
-    }
-
-    renderBonusForRune(runeName) {
-        if (!runeName) {
-            return null;
-        }
-
-        return <div>
-            choose bonus
-        </div>
-    }
-
     render() {
         const nextStepReady =
             Object.keys(this.props.characteristics).every((charKey => this.props.characteristics[charKey] > 0))
@@ -246,9 +186,6 @@ class CharacteristicsStepView extends React.PureComponent<CharacteristicsStepPro
                     />
                 })}
             </ul>
-
-            <h4>Runes affinity</h4>
-            {this.renderRunesAffinity()}
 
             <button type={'button'} onClick={this.undo}>undo</button>
             <button

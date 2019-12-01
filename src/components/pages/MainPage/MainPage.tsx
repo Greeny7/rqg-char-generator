@@ -7,6 +7,7 @@ import {Step} from "../../../store/stepsStore/stepsStoreTypes";
 import {GlobalState} from "../../../store/storeTypes";
 import {RunesDistributionStep} from "../../blocks/steps/RunesDistributionStep/RunesDistributionStep";
 import {CharacteristicsStep} from "../../blocks/steps/CharacteristicsStep/CharacteristicsStep";
+import { RunesAffinityBonusStep } from '../../blocks/steps/RunesAffinityBonusStep/RunesAffinityBonusStep';
 const CSS = require('./MainPage.css');
 
 interface MainPagePropsFromState {
@@ -18,6 +19,7 @@ const mapStateToProps = (state: GlobalState): MainPagePropsFromState => ({
 });
 
 class MainPageView extends React.PureComponent<MainPagePropsFromState> {
+
     render() {
         return <div>
             <h1>Character Generator for Runequest: Roleplaying in Glorantha</h1>
@@ -32,6 +34,8 @@ class MainPageView extends React.PureComponent<MainPagePropsFromState> {
                             ? <RunesDistributionStep />
                             : this.props.step === Step.CHARACTERISTICS
                             ? <CharacteristicsStep />
+                            : this.props.step === Step.RUNES_AFFINITY
+                            ? <RunesAffinityBonusStep />
                             : null
                     }
 

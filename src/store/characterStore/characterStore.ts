@@ -12,6 +12,12 @@ import {
     ADJUST_POWER_RUNE_ACTION
 } from "./characterRunesStore/characterRunesActions";
 import {Characteristics, HomelandTitle} from "../../gameEntities/gameEntitiesTypes";
+import {
+    CHOOSE_PRIMARY_RUNE_BONUS_CHAR,
+    CHOOSE_SECONDARY_RUNE_BONUS_CHAR,
+    REMOVE_PRIMARY_RUNE_BONUS_CHAR, REMOVE_SECONDARY_RUNE_BONUS_CHAR
+} from '../stepsStore/stepsActions';
+import { AFFINITY_RUNE_CHAR_BONUS_PRIMARY, AFFINITY_RUNE_CHAR_BONUS_SECONDARY } from '../../gameEntities/rules';
 
 export const defaultCharacterState: CharacterStore = {
     name: null,
@@ -31,6 +37,7 @@ export const defaultCharacterState: CharacterStore = {
 };
 
 export const characterReducer = (state = defaultCharacterState, action): CharacterStore => {
+    let newCharacteristics;
     switch (action.type) {
         case SET_PASSIONS_ACTION:
             return {
@@ -54,7 +61,7 @@ export const characterReducer = (state = defaultCharacterState, action): Charact
             };
 
         case ADJUST_CHARACTERISTICS_ACTION:
-            const newCharacteristics = {
+            newCharacteristics = {
                 ...state.characteristics
             };
             Object.keys(action.payload)
@@ -63,6 +70,42 @@ export const characterReducer = (state = defaultCharacterState, action): Charact
                 ...state,
                 characteristics: {
                     ...newCharacteristics
+                }
+            };
+
+        case CHOOSE_PRIMARY_RUNE_BONUS_CHAR:
+            return {
+                ...state,
+                characteristics: {
+                    ...state.characteristics,
+                    [action.payload]: state.characteristics[action.payload] + AFFINITY_RUNE_CHAR_BONUS_PRIMARY
+                }
+            };
+
+        case CHOOSE_SECONDARY_RUNE_BONUS_CHAR:
+            return {
+                ...state,
+                characteristics: {
+                    ...state.characteristics,
+                    [action.payload]: state.characteristics[action.payload] + AFFINITY_RUNE_CHAR_BONUS_SECONDARY
+                }
+            };
+
+        case REMOVE_PRIMARY_RUNE_BONUS_CHAR:
+            return {
+                ...state,
+                characteristics: {
+                    ...state.characteristics,
+                    [action.payload]: state.characteristics[action.payload] - AFFINITY_RUNE_CHAR_BONUS_PRIMARY
+                }
+            };
+
+        case REMOVE_SECONDARY_RUNE_BONUS_CHAR:
+            return {
+                ...state,
+                characteristics: {
+                    ...state.characteristics,
+                    [action.payload]: state.characteristics[action.payload] - AFFINITY_RUNE_CHAR_BONUS_SECONDARY
                 }
             };
 

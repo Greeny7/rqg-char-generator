@@ -1,8 +1,9 @@
 import {CharacteristicsMode, Step} from "./stepsStoreTypes";
 import {
+    Characteristics,
     RuneElementalTitle, RuneFormTitle, RunePowerTitle,
     RuneType
-} from "../../gameEntities/gameEntitiesTypes";
+} from '../../gameEntities/gameEntitiesTypes';
 import {
     ElementalRunesStore, FormRunesStore,
     PowerRunesStore
@@ -32,6 +33,11 @@ export const SET_FREE_CHARACTERISTICS_POINTS = 'SET_FREE_CHARACTERISTICS_POINTS'
 export const SET_CHARACTERISTICS_MODE = 'SET_CHARACTERISTICS_MODE';
 export const SET_PRIMARY_RUNE = 'SET_PRIMARY_RUNE';
 export const SET_SECONDARY_RUNE = 'SET_SECONDARY_RUNE';
+
+export const CHOOSE_PRIMARY_RUNE_BONUS_CHAR = 'CHOOSE_PRIMARY_RUNE_BONUS_CHAR';
+export const CHOOSE_SECONDARY_RUNE_BONUS_CHAR = 'CHOOSE_SECONDARY_RUNE_BONUS_CHAR';
+export const REMOVE_PRIMARY_RUNE_BONUS_CHAR = 'REMOVE_PRIMARY_RUNE_BONUS_CHAR';
+export const REMOVE_SECONDARY_RUNE_BONUS_CHAR = 'REMOVE_SECONDARY_RUNE_BONUS_CHAR';
 
 export const setStep = (step: Step) => ({
     type: SET_STEP,
@@ -67,8 +73,6 @@ export const setFreeRunePoints = (value: number) => ({
     type: SET_FREE_RUNE_POINTS,
     payload: value
 });
-
-
 
 export const setInitialCharacteristics = (
     characteristics: CharacteristicsStore
@@ -127,4 +131,24 @@ export const setPrimaryRune = (runeName: RuneElementalTitle) => ({
 export const setSecondaryRune = (runeName: RuneElementalTitle) => ({
     type: SET_SECONDARY_RUNE,
     payload: runeName,
+});
+
+export const choosePrimaryRuneBonusChar = (char: Characteristics) => ({
+    type: CHOOSE_PRIMARY_RUNE_BONUS_CHAR,
+    payload: char,
+});
+
+export const chooseSecondaryRuneBonusChar = (char: Characteristics) => ({
+    type: CHOOSE_SECONDARY_RUNE_BONUS_CHAR,
+    payload: char,
+});
+
+export const removePrimaryRuneBonusChar = (char: Characteristics) => ({
+    type: REMOVE_PRIMARY_RUNE_BONUS_CHAR,
+    payload: char,
+});
+
+export const removeSecondaryRuneBonusChar = (char: Characteristics) => ({
+    type: REMOVE_SECONDARY_RUNE_BONUS_CHAR,
+    payload: char,
 });

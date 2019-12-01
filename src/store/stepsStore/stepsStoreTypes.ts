@@ -30,4 +30,5 @@ export enum Step {
     RUNES,
     RUNES_DISTRIBUTION,
     CHARACTERISTICS,
+    RUNES_AFFINITY
 }

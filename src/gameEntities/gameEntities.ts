@@ -10,14 +10,16 @@ import {runeBeast, runeMan} from "./runes/formRunes";
 import {runeAir, runeDarkness, runeEarth, runeFire, runeMoon, runeWater} from "./runes/elementalRunes";
 import {praxBisonRiders} from "./homelands/praxBisonRiders";
 
+interface GameEntitiesRunes {
+    power: RunePower[],
+    form: RuneForm[],
+    elemental: RuneElemental[]
+}
+
 // TODO to map
 interface GameEntities {
     homelands: Homeland[],
-    runes: {
-        power: RunePower[],
-        form: RuneForm[],
-        elemental: RuneElemental[]
-    }
+    runes: GameEntitiesRunes
 }
 
 const gameEntities: GameEntities = {
@@ -57,6 +59,6 @@ export function getHomeland(title: HomelandTitle) {
     return cloneObject(homeland);
 }
 
-export function getRunesList() {
+export function getRunesList(): GameEntitiesRunes {
     return cloneObject(gameEntities.runes);
 }
