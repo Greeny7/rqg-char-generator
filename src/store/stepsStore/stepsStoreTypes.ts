@@ -3,29 +3,21 @@ import {
     PowerRunesStore
 } from "../characterStore/characterRunesStore/characterRunesStoreTypes";
 import {CharacteristicsStore} from "../characterStore/characterStoreTypes";
-import {RuneElementalTitle, RuneFormTitle, RunePowerTitle} from "../../gameEntities/gameEntitiesTypes";
+import {
+    Characteristics,
+    RuneElementalTitle,
+    RuneFormTitle,
+    RunePowerTitle
+} from '../../gameEntities/gameEntitiesTypes';
+import { CharacteristicsStepStore } from './reducers/characteristicsStep';
+import { RunesDistributionStore } from './reducers/runesDistributionStep';
+import { RunesStepStore } from './reducers/runesStep';
 
 export interface StepsStore {
     currentStep: Step,
-    runesStep: {
-        elementalRunesAffinity: RuneElementalTitle[];
-        formAndPowerRunesAffinities: (RunePowerTitle | RuneFormTitle)[];
-    }
-    runesDistributionStep: {
-        freePoints: number,
-        initialRunesValue: {
-            elemental: ElementalRunesStore,
-            power: PowerRunesStore,
-            form: FormRunesStore
-        }
-    }
-    characteristicsStep: {
-        initialCharacteristics: CharacteristicsStore,
-        freePoints: number,
-        mode: CharacteristicsMode,
-        elementalRunesAffinity: RuneElementalTitle[];
-        // runesCharacteristicsBonus:
-    }
+    runesStep: RunesStepStore,
+    runesDistributionStep: RunesDistributionStore
+    characteristicsStep: CharacteristicsStepStore
 }
 
 export enum CharacteristicsMode {

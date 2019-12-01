@@ -2,28 +2,24 @@ import * as React from "react";
 import { connect } from 'react-redux';
 import {GlobalState} from "../../../../store/storeTypes";
 import {
-    decrementFreeRunePoints, incrementFreeRunePoints, nextStep, prevStep, resetInitialRuneValues, setFreeRunePoints,
-    setStep
+    decrementFreeRunePoints, incrementFreeRunePoints, nextStep, prevStep, resetInitialRuneValues, setFreeRunePoints
 } from "../../../../store/stepsStore/stepsActions";
-import {Step} from "../../../../store/stepsStore/stepsStoreTypes";
 import {RuneElementalTitle, RuneFormTitle, RunePowerTitle, RuneType} from "../../../../gameEntities/gameEntitiesTypes";
 import {getRunesList} from "../../../../gameEntities/gameEntities";
 import {
-    setElementalRune, setFormRune,
-    setPowerRune, setRunes
+    setElementalRune, setRunes
 } from "../../../../store/characterStore/characterRunesStore/characterRunesActions";
 import {RuneCounter} from "./RuneCounter/RuneCounter";
 import {
     setAndBalanceFormRune,
     setAndBalancePowerRune
 } from "../../../../store/characterStore/characterRunesStore/characterRunesThunks";
-import {MAX_FREE_RUNE_POINTS} from "../../../../store/stepsStore/stepsStore";
-import {objectForEach} from "../../../../utils/iterateObject";
 import {saveInitialRuneValues} from "../../../../store/stepsStore/stepsThunks";
 import {
     ElementalRunesStore,
     FormRunesStore, PowerRunesStore
 } from "../../../../store/characterStore/characterRunesStore/characterRunesStoreTypes";
+import { MAX_FREE_RUNE_POINTS } from '../../../../gameEntities/rules';
 const CSS = require('./RunesDistributionStep.css');
 
 interface RunesDistributionStepOwnProps {}

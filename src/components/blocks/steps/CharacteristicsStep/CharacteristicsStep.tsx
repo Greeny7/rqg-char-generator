@@ -18,8 +18,8 @@ import {CharacteristicsCounter} from "./CharacteristicsCounter/CharacteristicsCo
 import {rollD6} from "../../../../utils/diceRolls";
 import {number} from "prop-types";
 import {saveInitialCharacteristicsValues} from "../../../../store/stepsStore/stepsThunks";
-import {MAX_FREE_CHARACTERISTICS_POINTS} from "../../../../store/stepsStore/stepsStore";
 import {getMaxRunes} from "../../../../store/characterStore/characterRunesStore/characterRunesSelectors";
+import { MAX_FREE_CHARACTERISTICS_POINTS } from '../../../../gameEntities/rules';
 const CSS = require('./CharacteristicsStep.css');
 
 interface CharacteristicsStepOwnProps {}
@@ -59,8 +59,7 @@ const mapStateToProps = (state: GlobalState): CharacteristicsStepPropsFromState 
 });
 
 const mapDispatchToProps = (dispatch): CharacteristicsStepDispatchProps => ({
-    setCharacteristics: (characteristicsMap: CharacteristicsStore) =>
-        dispatch(setCharacteristics(characteristicsMap)),
+    setCharacteristics: (characteristicsMap: CharacteristicsStore) => dispatch(setCharacteristics(characteristicsMap)),
     saveInitialCharacteristicsValues: () => dispatch(saveInitialCharacteristicsValues()),
     resetInitialCharacteristics: () => dispatch(resetInitialCharacteristics()) ,
     decrementFreeCharacteristicsPoints: () => dispatch(decrementFreeCharacteristicsPoints()),
@@ -81,6 +80,7 @@ class CharacteristicsStepView extends React.PureComponent<CharacteristicsStepPro
 
         }
 
+        console.log(this.props.runesAffinity[0]);
         if (!this.props.runesAffinity[0]) {
             const initialPrimaryRune = this.props.maxRunes[0][0];
             this.props.setPrimaryRune(initialPrimaryRune);
@@ -98,10 +98,10 @@ class CharacteristicsStepView extends React.PureComponent<CharacteristicsStepPro
     undo = () => {
         this.resetCharacteristics();
         this.props.resetInitialCharacteristics();
-        this.props.setPrimaryRune(null);
         this.props.setSecondaryRune(null);
+        this.props.setPrimaryRune(null);
         this.props.prevStep();
-    }
+    };
 
     incrementChar(charKey: Characteristics) {
         this.props.setCharacteristics({[charKey]: this.props.characteristics[charKey] + 1});
@@ -157,12 +157,14 @@ class CharacteristicsStepView extends React.PureComponent<CharacteristicsStepPro
             ? primaryRunesChoice
             : this.props.maxRunes[1];
 
+        const [currentPrimaryRune, currentSecondaryRune]  = this.props.runesAffinity;
+
         return <ul>
             <li>
                 <b>Primary rune: </b>
                 {primaryRunesChoice.map((runeName, index) => {
                         const nextRune = primaryRunesChoice[index + 1];
-                        const selected = this.props.runesAffinity[0] === runeName;
+                        const selected = currentPrimaryRune === runeName;
                         return <span key={index}>
                             <span
                                 onClick={() => this.props.setPrimaryRune(runeName)}
@@ -174,12 +176,13 @@ class CharacteristicsStepView extends React.PureComponent<CharacteristicsStepPro
                         </span>
                     })
                 }
+                {}
             </li>
             <li>
                 <b>Secondary rune: </b>
                 {secondaryRunesChoice.map((runeName, index) => {
                     const nextRune = secondaryRunesChoice[index + 1];
-                    const selected = this.props.runesAffinity[1] === runeName;
+                    const selected = currentSecondaryRune === runeName;
                     return <span key={index}>
                         <span
                             onClick={() => this.props.setSecondaryRune(runeName)}
@@ -192,6 +195,16 @@ class CharacteristicsStepView extends React.PureComponent<CharacteristicsStepPro
                 })}
             </li>
         </ul>
+    }
+
+    renderBonusForRune(runeName) {
+        if (!runeName) {
+            return null;
+        }
+
+        return <div>
+            choose bonus
+        </div>
     }
 
     render() {
