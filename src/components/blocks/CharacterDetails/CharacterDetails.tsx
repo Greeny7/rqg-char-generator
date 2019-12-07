@@ -1,9 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import {GlobalState} from "../../../store/storeTypes";
-import {CharacterStore} from "../../../store/characterStore/characterStoreTypes";
-import {RuneElementalTitle} from "../../../gameEntities/gameEntitiesTypes";
-import {getMaxRunes} from "../../../store/characterStore/characterRunesStore/characterRunesSelectors";
+import { GlobalState } from '../../../store/storeTypes';
+import { CharacterStore } from '../../../store/characterStore/characterStoreTypes';
+import { Characteristics, HitLocation } from '../../../gameEntities/gameEntitiesTypes';
+import {
+    getCharacterHealingRate,
+    getCharacterMaxHp,
+    getCharacterMaxLocationsHp
+} from '../../../store/characterStore/characterSelectors';
 // import { makeLovelyAction } from '../../../store/actions';
 const CSS = require('./CharacterDetails.css');
 
@@ -12,27 +16,23 @@ interface CharacterDetailsOwnProps {
 
 interface CharacterDetailsPropsFromState {
     character: CharacterStore,
-    runeAffinities: RuneElementalTitle[]
+    maxHp: number,
+    maxLocationsHp: Object,
+    healingRate: number,
 }
 
-interface CharacterDetailsDispatchProps {
-
-}
+interface CharacterDetailsDispatchProps {}
 
 type CharacterDetailsProps = CharacterDetailsOwnProps & CharacterDetailsPropsFromState & CharacterDetailsDispatchProps;
 
-const mapStateToProps = (state: GlobalState): CharacterDetailsPropsFromState => {
-    return {
-        character: state.character,
-        runeAffinities: getMaxRunes(state)
-    };
-};
+const mapStateToProps = (state: GlobalState): CharacterDetailsPropsFromState => ({
+    character: state.character,
+    maxHp: getCharacterMaxHp(state),
+    maxLocationsHp: getCharacterMaxLocationsHp(state),
+    healingRate: getCharacterHealingRate(state)
+});
 
-const mapDispatchToProps = (dispatch): CharacterDetailsDispatchProps => {
-    return {
-
-    };
-};
+const mapDispatchToProps = (): CharacterDetailsDispatchProps => ({});
 
 class CharacterDetailsView extends React.Component<CharacterDetailsProps> {
 
@@ -100,6 +100,25 @@ class CharacterDetailsView extends React.Component<CharacterDetailsProps> {
         </div>
     }
 
+    renderAttrubutes() {
+        const mana = this.props.character.characteristics[Characteristics.POW];
+        const {maxHp, maxLocationsHp, healingRate} = this.props;
+
+        return <ul>
+            <li>HP: {maxHp}</li>
+            <li>MP: {mana}</li>
+            <li>
+                Max location hp:
+                <ul>
+                    {Object.keys(maxLocationsHp).map((location: HitLocation, index) => <li key={index}>
+                        {location}: {maxLocationsHp[location]}
+                    </li>)}
+                </ul>
+            </li>
+            <li>Healing rate: {healingRate}</li>
+        </ul>
+    }
+
     render() {
         return <>
             <h2>Character</h2>
@@ -107,6 +126,7 @@ class CharacterDetailsView extends React.Component<CharacterDetailsProps> {
             {this.renderCharacteristics()}
             {this.renderRunes()}
             {this.renderPassions()}
+            {this.renderAttrubutes()}
         </>
     }
 }

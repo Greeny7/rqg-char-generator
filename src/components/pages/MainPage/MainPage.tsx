@@ -27,13 +27,13 @@ class MainPageView extends React.PureComponent<MainPagePropsFromState> {
                 <main className={CSS.main}>
                     {
                         this.props.step === Step.HOMELAND
-                            ? <HomelandStep />
+                            ? <CharacteristicsStep />
                             : this.props.step === Step.RUNES
                             ? <RunesStep />
                             : this.props.step === Step.RUNES_DISTRIBUTION
                             ? <RunesDistributionStep />
                             : this.props.step === Step.CHARACTERISTICS
-                            ? <CharacteristicsStep />
+                            ? <HomelandStep />
                             : this.props.step === Step.RUNES_AFFINITY
                             ? <RunesAffinityBonusStep />
                             : null

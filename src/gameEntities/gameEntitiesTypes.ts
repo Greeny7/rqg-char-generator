@@ -123,6 +123,14 @@ export enum RuneFormTitle {
     MAN = 'man',
 }
 
+export enum HitLocation {
+    LEG = 'leg',
+    ABDOMEN = 'abdomen',
+    CHEST = 'chest',
+    ARM = 'arm',
+    HEAD = 'head',
+}
+
 export interface RuneElemental {
     title: RuneElementalTitle,
     type: RuneType.ELEMENTAL,

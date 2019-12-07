@@ -1,4 +1,6 @@
 import { Step } from '../store/stepsStore/stepsStoreTypes';
+import { Characteristics, HitLocation } from './gameEntitiesTypes';
+import { CharacteristicsStore } from '../store/characterStore/characterStoreTypes';
 
 export const stepsOrder = Object.freeze([
     Step.HOMELAND,
@@ -26,3 +28,30 @@ export const MAX_FREE_RUNE_POINTS = 50;
 
 export const AFFINITY_RUNE_CHAR_BONUS_PRIMARY = 2;
 export const AFFINITY_RUNE_CHAR_BONUS_SECONDARY = 1;
+
+export const calculateHpModifier = (characteristics: CharacteristicsStore): number => {
+    const {SIZ, POW, CON} = characteristics;
+    const sizeModifier =
+        SIZ <= 4
+        ? -2
+        : -2 + Math.ceil((SIZ - 4) / 4);
+
+    const powerModifier =
+        POW <= 4
+        ? -1
+        : POW <= 16
+        ? 0
+        : Math.ceil((POW - 16) / 4);
+
+    return CON + sizeModifier + powerModifier;
+};
+
+export const calculateMaxLocationsHp = (totalHp: number) => ({
+    [HitLocation.LEG]:      totalHp <= 6 ? 2 : 2 + Math.ceil((totalHp - 6) / 3),
+    [HitLocation.ABDOMEN]:  totalHp <= 6 ? 2 : 2 + Math.ceil((totalHp - 6) / 3),
+    [HitLocation.CHEST]:    totalHp <= 6 ? 3 : 3 + Math.ceil((totalHp - 6) / 3),
+    [HitLocation.ARM]:      totalHp <= 6 ? 1 : 1 + Math.ceil((totalHp - 6) / 3),
+    [HitLocation.HEAD]:     totalHp <= 6 ? 2 : 2 + Math.ceil((totalHp - 6) / 3)
+});
+
+export const calculateHealingRate = (con: number) => Math.max(1, Math.ceil((con) / 6));
