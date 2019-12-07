@@ -1,8 +1,8 @@
 import {
-    SET_PRIMARY_RUNE_TITLE_ACTION, SET_ELEMENTAL_RUNE_ACTION, SET_SECONDARY_RUNE_TITLE_ACTION,
-    SET_TERTIARY_RUNE_TITLE_ACTION, SET_POWER_RUNE_ACTION, SET_FORM_RUNE_ACTION,
-    SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION, ADJUST_ELEMENTAL_RUNE_ACTION, ADJUST_POWER_RUNE_ACTION,
-    ADJUST_FORM_RUNE_ACTION, SET_RUNES
+    SET_ELEMENTAL_RUNE,
+    SET_POWER_RUNE, SET_FORM_RUNE,
+    ADJUST_ELEMENTAL_RUNE, ADJUST_POWER_RUNE,
+    ADJUST_FORM_RUNE, SET_RUNES
 } from "./characterRunesActions";
 import {CharacterRunes} from "./characterRunesStoreTypes";
 
@@ -36,7 +36,7 @@ export const characterRunesReducer = (state = defaultCharacterRunesState, action
     let runeName, value;
 
     switch (action.type) {
-        case SET_ELEMENTAL_RUNE_ACTION:
+        case SET_ELEMENTAL_RUNE:
 
             runeName = action.payload.runeName;
             value = action.payload.value;
@@ -49,7 +49,7 @@ export const characterRunesReducer = (state = defaultCharacterRunesState, action
                 }
             };
 
-        case SET_POWER_RUNE_ACTION:
+        case SET_POWER_RUNE:
 
             runeName = action.payload.runeName;
             value = action.payload.value;
@@ -62,7 +62,7 @@ export const characterRunesReducer = (state = defaultCharacterRunesState, action
                 }
             };
 
-        case SET_FORM_RUNE_ACTION:
+        case SET_FORM_RUNE:
 
             runeName = action.payload.runeName;
             value = action.payload.value;
@@ -75,7 +75,7 @@ export const characterRunesReducer = (state = defaultCharacterRunesState, action
                 }
             };
 
-        case ADJUST_ELEMENTAL_RUNE_ACTION:
+        case ADJUST_ELEMENTAL_RUNE:
 
             runeName = action.payload.runeName;
             value = action.payload.value;
@@ -88,7 +88,7 @@ export const characterRunesReducer = (state = defaultCharacterRunesState, action
                 }
             };
 
-        case ADJUST_POWER_RUNE_ACTION:
+        case ADJUST_POWER_RUNE:
 
             runeName = action.payload.runeName;
             value = action.payload.value;
@@ -101,7 +101,7 @@ export const characterRunesReducer = (state = defaultCharacterRunesState, action
                 }
             };
 
-        case ADJUST_FORM_RUNE_ACTION:
+        case ADJUST_FORM_RUNE:
 
             runeName = action.payload.runeName;
             value = action.payload.value;

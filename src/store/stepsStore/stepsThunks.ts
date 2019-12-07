@@ -6,10 +6,7 @@ import {
     removePrimaryRuneBonusChar,
     removeSecondaryRuneBonusChar,
     setInitialCharacteristics,
-    setInitialRunes,
-    setPrimaryRuneTitle,
-    setSecondaryRuneTitle,
-    setTertiaryRuneTitle
+    setInitialRunes, setMainRuneTitle,
 } from './stepsActions';
 import {
     setAndBalanceFormRune,
@@ -23,87 +20,113 @@ import {
 } from '../../gameEntities/gameEntitiesTypes';
 import {adjustElementalRune} from "../characterStore/characterRunesStore/characterRunesActions";
 import {
+    MAIN_RUNE_BONUSES,
     POWER_FORM_RUNE_AFFINITY_BONUS,
-    PRIMARY_RUNE_BONUS,
-    SECONDARY_RUNE_BONUS,
-    TERTIARY_RUNE_BONUS
+    RuneImportancy,
 } from '../../gameEntities/rules';
+import { CharacterRunes } from '../characterStore/characterRunesStore/characterRunesStoreTypes';
+import { CharacteristicsStore } from '../characterStore/characterStoreTypes';
 
+const getCharacterRunes = (state: GlobalState): CharacterRunes => state.character.runes;
+const getCharacterCharacteristics = (state: GlobalState): CharacteristicsStore => state.character.characteristics;
+const getMainCharacterRunes = (state: GlobalState): RuneElementalTitle[] => state.steps.runesStep.elementalRunesAffinity;
 
 export const saveInitialRuneValues = () => (dispatch, getState: () => GlobalState) => {
-    const {elemental, form, power} = getState().character.runes;
+    const {elemental, form, power} = getCharacterRunes(getState());
     dispatch(setInitialRunes(elemental, power, form));
 };
 
 export const saveInitialCharacteristicsValues = () => (dispatch, getState: () => GlobalState) => {
-    const {characteristics} = getState().character;
+    const characteristics = getCharacterCharacteristics(getState());
     dispatch(setInitialCharacteristics(characteristics));
 };
 
-export function selectPrimaryElementalRune(runeName: RuneElementalTitle) {
-    return function(dispatch, getState: () => GlobalState) {
-        const state = getState();
+// export function selectPrimaryElementalRune(runeName: RuneElementalTitle) {
+//     return function(dispatch, getState: () => GlobalState) {
+//         const state = getState();
+//
+//         const oldPrimaryRune = state.steps.runesStep.elementalRunesAffinity[0];
+//         if (runeName && oldPrimaryRune === runeName) {
+//             dispatch(adjustElementalRune(oldPrimaryRune, -PRIMARY_RUNE_BONUS));
+//             dispatch(setPrimaryRuneTitle(null));
+//             return;
+//         }
+//
+//         if (oldPrimaryRune) {
+//             dispatch(adjustElementalRune(oldPrimaryRune, -PRIMARY_RUNE_BONUS));
+//         }
+//
+//         if (runeName) {
+//             dispatch(adjustElementalRune(runeName, PRIMARY_RUNE_BONUS));
+//         }
+//
+//         dispatch(setPrimaryRuneTitle(runeName));
+//     }
+// }
+//
+// export function selectSecondaryElementalRune(runeName: RuneElementalTitle) {
+//     return function(dispatch, getState: () => GlobalState) {
+//         const state = getState();
+//
+//         const oldSecondaryRune = state.steps.runesStep.elementalRunesAffinity[1];
+//         if (runeName && oldSecondaryRune === runeName) {
+//             dispatch(adjustElementalRune(oldSecondaryRune, -SECONDARY_RUNE_BONUS));
+//             dispatch(setSecondaryRuneTitle(null));
+//             return;
+//         }
+//
+//         if (oldSecondaryRune) {
+//             dispatch(adjustElementalRune(oldSecondaryRune, -SECONDARY_RUNE_BONUS));
+//         }
+//
+//         if (runeName) {
+//             dispatch(adjustElementalRune(runeName, SECONDARY_RUNE_BONUS));
+//         }
+//         dispatch(setSecondaryRuneTitle(runeName));
+//     }
+// }
+//
+// export function selectTertiaryElementalRune(runeName: RuneElementalTitle) {
+//     return function(dispatch, getState: () => GlobalState) {
+//         const state = getState();
+//
+//         const oldTertiaryRune = state.steps.runesStep.elementalRunesAffinity[2];
+//         if (runeName && oldTertiaryRune === runeName) {
+//             dispatch(adjustElementalRune(oldTertiaryRune, -TERTIARY_RUNE_BONUS));
+//             dispatch(setTertiaryRuneTitle(null));
+//             return;
+//         }
+//
+//         if (oldTertiaryRune) {
+//             dispatch(adjustElementalRune(oldTertiaryRune, -TERTIARY_RUNE_BONUS));
+//         }
+//
+//         if (runeName) {
+//             dispatch(adjustElementalRune(runeName, TERTIARY_RUNE_BONUS));
+//         }
+//         dispatch(setTertiaryRuneTitle(runeName));
+//     }
+// }
 
-        const oldPrimaryRune = state.steps.runesStep.elementalRunesAffinity[0];
-        if (runeName && oldPrimaryRune === runeName) {
-            dispatch(adjustElementalRune(oldPrimaryRune, -PRIMARY_RUNE_BONUS));
-            dispatch(setPrimaryRuneTitle(null));
+export function selectMainElementalRune(newRune: RuneElementalTitle, runeImportancy: RuneImportancy) {
+    return function(dispatch, getState: () => GlobalState) {
+        const oldRune = getMainCharacterRunes(getState())[runeImportancy];
+
+        if (newRune && newRune === oldRune) {
             return;
         }
 
-        if (oldPrimaryRune) {
-            dispatch(adjustElementalRune(oldPrimaryRune, -PRIMARY_RUNE_BONUS));
+        const bonus = MAIN_RUNE_BONUSES[runeImportancy];
+
+        if (oldRune) {
+            dispatch(adjustElementalRune(oldRune, -bonus));
         }
 
-        if (runeName) {
-            dispatch(adjustElementalRune(runeName, PRIMARY_RUNE_BONUS));
+        if (newRune) {
+            dispatch(adjustElementalRune(newRune, bonus));
         }
 
-        dispatch(setPrimaryRuneTitle(runeName));
-    }
-}
-
-export function selectSecondaryElementalRune(runeName: RuneElementalTitle) {
-    return function(dispatch, getState: () => GlobalState) {
-        const state = getState();
-
-        const oldSecondaryRune = state.steps.runesStep.elementalRunesAffinity[1];
-        if (runeName && oldSecondaryRune === runeName) {
-            dispatch(adjustElementalRune(oldSecondaryRune, -SECONDARY_RUNE_BONUS));
-            dispatch(setSecondaryRuneTitle(null));
-            return;
-        }
-
-        if (oldSecondaryRune) {
-            dispatch(adjustElementalRune(oldSecondaryRune, -SECONDARY_RUNE_BONUS));
-        }
-
-        if (runeName) {
-            dispatch(adjustElementalRune(runeName, SECONDARY_RUNE_BONUS));
-        }
-        dispatch(setSecondaryRuneTitle(runeName));
-    }
-}
-
-export function selectTertiaryElementalRune(runeName: RuneElementalTitle) {
-    return function(dispatch, getState: () => GlobalState) {
-        const state = getState();
-
-        const oldTertiaryRune = state.steps.runesStep.elementalRunesAffinity[2];
-        if (runeName && oldTertiaryRune === runeName) {
-            dispatch(adjustElementalRune(oldTertiaryRune, -TERTIARY_RUNE_BONUS));
-            dispatch(setTertiaryRuneTitle(null));
-            return;
-        }
-
-        if (oldTertiaryRune) {
-            dispatch(adjustElementalRune(oldTertiaryRune, -TERTIARY_RUNE_BONUS));
-        }
-
-        if (runeName) {
-            dispatch(adjustElementalRune(runeName, TERTIARY_RUNE_BONUS));
-        }
-        dispatch(setTertiaryRuneTitle(runeName));
+        dispatch(setMainRuneTitle(newRune, runeImportancy));
     }
 }
 

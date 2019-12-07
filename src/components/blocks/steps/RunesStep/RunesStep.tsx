@@ -6,9 +6,10 @@ import {Step} from "../../../../store/stepsStore/stepsStoreTypes";
 import {RuneElementalTitle, RuneFormTitle, RunePowerTitle} from "../../../../gameEntities/gameEntitiesTypes";
 import {getRunesList} from "../../../../gameEntities/gameEntities";
 import {
-    selectPrimaryElementalRune, selectSecondaryElementalRune,
-    selectTertiaryElementalRune, toggleFormRuneAffinity, togglePowerRuneAffinity
-} from "../../../../store/stepsStore/stepsThunks";
+    selectMainElementalRune,
+    toggleFormRuneAffinity, togglePowerRuneAffinity
+} from '../../../../store/stepsStore/stepsThunks';
+import { MAIN_RUNE_BONUSES, RuneImportancy } from '../../../../gameEntities/rules';
 const CSS = require('./RunesStep.css');
 
 interface RunesStepOwnProps {}
@@ -19,9 +20,7 @@ interface RunesStepPropsFromState {
 }
 
 interface RunesStepDispatchProps {
-    selectPrimaryElementalRune(runeName: RuneElementalTitle): void;
-    selectSecondaryElementalRune(runeName: RuneElementalTitle): void;
-    selectTertiaryElementalRune(runeName: RuneElementalTitle): void;
+    selectMainElementalRune(runeName: RuneElementalTitle, runeImportancy: RuneImportancy): void;
     toggleFormRuneAffinity(runeName: RuneFormTitle): void;
     togglePowerRuneAffinity(runeName: RunePowerTitle): void;
     nextStep(): void;
@@ -36,9 +35,10 @@ const mapStateToProps = (state: GlobalState): RunesStepPropsFromState => ({
 });
 
 const mapDispatchToProps = (dispatch): RunesStepDispatchProps => ({
-    selectPrimaryElementalRune: (runeName: RuneElementalTitle) => dispatch(selectPrimaryElementalRune(runeName)),
-    selectSecondaryElementalRune: (runeName: RuneElementalTitle) => dispatch(selectSecondaryElementalRune(runeName)),
-    selectTertiaryElementalRune: (runeName: RuneElementalTitle) => dispatch(selectTertiaryElementalRune(runeName)),
+    selectMainElementalRune: (
+        runeName: RuneElementalTitle,
+        runeImportancy: RuneImportancy
+    ) => dispatch(selectMainElementalRune(runeName, runeImportancy)),
     toggleFormRuneAffinity: (runeName: RuneFormTitle) => dispatch(toggleFormRuneAffinity(runeName)),
     togglePowerRuneAffinity: (runeName: RunePowerTitle) => dispatch(togglePowerRuneAffinity(runeName)),
     nextStep: () => dispatch(setStep(Step.RUNES_DISTRIBUTION)),
@@ -56,9 +56,9 @@ class RunesStepView extends React.PureComponent<RunesStepProps> {
                     this.props.togglePowerRuneAffinity(runeName);
                 }
             });
-        this.props.selectPrimaryElementalRune(null);
-        this.props.selectSecondaryElementalRune(null);
-        this.props.selectTertiaryElementalRune(null);
+        this.props.selectMainElementalRune(null, 0);
+        this.props.selectMainElementalRune(null, 1);
+        this.props.selectMainElementalRune(null, 2);
         this.props.prevStep();
     }
 
@@ -75,7 +75,7 @@ class RunesStepView extends React.PureComponent<RunesStepProps> {
         const formRunes: RuneFormTitle[] = runesList.form.map(rune => rune.title);
 
         return <div>
-            <h4>Choose primary elemental rune (+60%):</h4>
+            <h4>Choose primary elemental rune (+${MAIN_RUNE_BONUSES[0]}%):</h4>
             <ul>
                 {elementalRunes
                     .map((runeName, index) => {
@@ -86,7 +86,7 @@ class RunesStepView extends React.PureComponent<RunesStepProps> {
 
                         return <li
                             key={index}
-                            onClick={() => !unactive && this.props.selectPrimaryElementalRune(runeName)}
+                            onClick={() => !unactive && this.props.selectMainElementalRune(runeName, 0)}
                             className={unactive ? CSS.unactive : ''}
                         >
                             {runeName} {selected && <b> - selected</b>}
@@ -95,7 +95,7 @@ class RunesStepView extends React.PureComponent<RunesStepProps> {
                 )}
             </ul>
 
-            <h4>Choose secondary elemental rune (+40%):</h4>
+            <h4>Choose secondary elemental rune (+${MAIN_RUNE_BONUSES[1]}%):</h4>
             <ul>
                 {elementalRunes
                     .map((runeName, index) => {
@@ -106,7 +106,7 @@ class RunesStepView extends React.PureComponent<RunesStepProps> {
 
                             return <li
                                 key={index}
-                                onClick={() => !unactive && this.props.selectSecondaryElementalRune(runeName)}
+                                onClick={() => !unactive && this.props.selectMainElementalRune(runeName, 1)}
                                 className={unactive ? CSS.unactive : ''}
                             >
                                 {runeName} {selected && <b> - selected</b>}
@@ -115,7 +115,7 @@ class RunesStepView extends React.PureComponent<RunesStepProps> {
                     )}
             </ul>
 
-            <h4>Choose tertiary elemental rune (+20%):</h4>
+            <h4>Choose tertiary elemental rune (+${MAIN_RUNE_BONUSES[2]}%):</h4>
             <ul>
                 {elementalRunes
                     .map((runeName, index) => {
@@ -126,7 +126,7 @@ class RunesStepView extends React.PureComponent<RunesStepProps> {
 
                             return <li
                                 key={index}
-                                onClick={() => !unactive && this.props.selectTertiaryElementalRune(runeName)}
+                                onClick={() => !unactive && this.props.selectMainElementalRune(runeName, 2)}
                                 className={unactive ? CSS.unactive : ''}
                             >
                                 {runeName} {selected && <b> - selected</b>}

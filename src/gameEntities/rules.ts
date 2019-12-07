@@ -8,9 +8,17 @@ export const stepsOrder = Object.freeze([
     Step.RUNES_AFFINITY,
 ]);
 
-export const PRIMARY_RUNE_BONUS = 60;
-export const SECONDARY_RUNE_BONUS = 40;
-export const TERTIARY_RUNE_BONUS = 20;
+const PRIMARY_RUNE_BONUS = 60;
+const SECONDARY_RUNE_BONUS = 40;
+const TERTIARY_RUNE_BONUS = 20;
+export const MAIN_RUNE_BONUSES = Object.freeze([
+    PRIMARY_RUNE_BONUS,
+    SECONDARY_RUNE_BONUS,
+    TERTIARY_RUNE_BONUS
+]);
+
+export type RuneImportancy = 0 | 1 | 2;
+
 export const POWER_FORM_RUNE_AFFINITY_BONUS = 25;
 
 export const MAX_FREE_CHARACTERISTICS_POINTS = 95;

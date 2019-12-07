@@ -1,16 +1,9 @@
 import {characterRunesReducer, defaultCharacterRunesState} from "./characterRunesStore/characterRunesStore";
 import {CharacterStore} from "./characterStoreTypes";
-import {combineReducers} from "redux";
 import {
-    ADJUST_CHARACTERISTICS_ACTION, SET_CHARACTERISTICS_ACTION, SET_HOMELAND_TITLE_ACTION,
-    SET_PASSIONS_ACTION
+    ADJUST_CHARACTERISTICS, SET_CHARACTERISTICS, SET_HOMELAND_TITLE,
+    SET_PASSIONS
 } from "./characterActions";
-import {
-    SET_PRIMARY_RUNE_TITLE_ACTION, SET_ELEMENTAL_RUNE_ACTION,
-    SET_SECONDARY_RUNE_TITLE_ACTION, SET_TERTIARY_RUNE_TITLE_ACTION, SET_POWER_RUNE_ACTION, SET_FORM_RUNE_ACTION,
-    SET_POWER_OR_FORM_RUNE_AFFINITY_TITLES_ACTION, ADJUST_ELEMENTAL_RUNE_ACTION, ADJUST_FORM_RUNE_ACTION,
-    ADJUST_POWER_RUNE_ACTION
-} from "./characterRunesStore/characterRunesActions";
 import {Characteristics, HomelandTitle} from "../../gameEntities/gameEntitiesTypes";
 import {
     CHOOSE_PRIMARY_RUNE_BONUS_CHAR,
@@ -39,19 +32,19 @@ export const defaultCharacterState: CharacterStore = {
 export const characterReducer = (state = defaultCharacterState, action): CharacterStore => {
     let newCharacteristics;
     switch (action.type) {
-        case SET_PASSIONS_ACTION:
+        case SET_PASSIONS:
             return {
                 ...state,
                 passions: action.payload
             };
 
-        case SET_HOMELAND_TITLE_ACTION:
+        case SET_HOMELAND_TITLE:
             return {
                 ...state,
                 homeland: action.payload
             };
 
-        case SET_CHARACTERISTICS_ACTION:
+        case SET_CHARACTERISTICS:
             return {
                 ...state,
                 characteristics: {
@@ -60,7 +53,7 @@ export const characterReducer = (state = defaultCharacterState, action): Charact
                 }
             };
 
-        case ADJUST_CHARACTERISTICS_ACTION:
+        case ADJUST_CHARACTERISTICS:
             newCharacteristics = {
                 ...state.characteristics
             };
