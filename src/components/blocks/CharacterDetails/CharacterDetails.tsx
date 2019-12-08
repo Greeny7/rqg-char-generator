@@ -2,12 +2,18 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { GlobalState } from '../../../store/storeTypes';
 import { CharacterStore } from '../../../store/characterStore/characterStoreTypes';
-import { Characteristics, HitLocation } from '../../../gameEntities/gameEntitiesTypes';
+import {Characteristics, DiceRoll, HitLocation} from '../../../gameEntities/gameEntitiesTypes';
 import {
     getCharacterHealingRate,
     getCharacterMaxHp,
-    getCharacterMaxLocationsHp
+    getCharacterMaxLocationsHp,
+    getDamageBonus,
+    getDexStrikeRank,
+    getEncumbrancePoints,
+    getSizeStrikeRank,
+    getSpiritCombatDamage
 } from '../../../store/characterStore/characterSelectors';
+import {diceToString} from "../../../utils/diceRolls";
 // import { makeLovelyAction } from '../../../store/actions';
 const CSS = require('./CharacterDetails.css');
 
@@ -19,6 +25,11 @@ interface CharacterDetailsPropsFromState {
     maxHp: number,
     maxLocationsHp: Object,
     healingRate: number,
+    damageBonus: DiceRoll,
+    spiritCombatDamage: DiceRoll,
+    encumbrancePoints: number,
+    dexStrikeRank: number,
+    sizeStrikeRank: number,
 }
 
 interface CharacterDetailsDispatchProps {}
@@ -29,7 +40,12 @@ const mapStateToProps = (state: GlobalState): CharacterDetailsPropsFromState => 
     character: state.character,
     maxHp: getCharacterMaxHp(state),
     maxLocationsHp: getCharacterMaxLocationsHp(state),
-    healingRate: getCharacterHealingRate(state)
+    healingRate: getCharacterHealingRate(state),
+    damageBonus: getDamageBonus(state),
+    spiritCombatDamage: getSpiritCombatDamage(state),
+    encumbrancePoints: getEncumbrancePoints(state),
+    dexStrikeRank: getDexStrikeRank(state),
+    sizeStrikeRank: getSizeStrikeRank(state),
 });
 
 const mapDispatchToProps = (): CharacterDetailsDispatchProps => ({});
@@ -38,18 +54,17 @@ class CharacterDetailsView extends React.Component<CharacterDetailsProps> {
 
     renderPassions() {
         const { passions } = this.props.character;
-        if (passions.length > 0) {
-            return <>
-                <h3>Passions</h3>
-                <ul>
-                    {passions.map((passion, index) => <li key={index}>
-                        <b>{passion.name} {passion.target && `(${passion.target})`}</b>: {passion.value}%
-                    </li>)}
-                </ul>
-            </>
-        }
 
-        return null;
+        if (passions.length === 0) return null;
+
+        return <>
+            <h3>Passions</h3>
+            <ul>
+                {passions.map((passion, index) => <li key={index}>
+                    <b>{passion.name} {passion.target && `(${passion.target})`}</b>: {passion.value}%
+                </li>)}
+            </ul>
+        </>
     }
 
     renderHomeland() {
@@ -102,7 +117,16 @@ class CharacterDetailsView extends React.Component<CharacterDetailsProps> {
 
     renderAttrubutes() {
         const mana = this.props.character.characteristics[Characteristics.POW];
-        const {maxHp, maxLocationsHp, healingRate} = this.props;
+        const {
+            maxHp,
+            maxLocationsHp,
+            healingRate,
+            damageBonus,
+            spiritCombatDamage,
+            encumbrancePoints,
+            dexStrikeRank,
+            sizeStrikeRank,
+        } = this.props;
 
         return <ul>
             <li>HP: {maxHp}</li>
@@ -116,6 +140,11 @@ class CharacterDetailsView extends React.Component<CharacterDetailsProps> {
                 </ul>
             </li>
             <li>Healing rate: {healingRate}</li>
+            <li>Damage bonus: {diceToString(damageBonus, true)}</li>
+            <li>Spirit combat damage: {diceToString(spiritCombatDamage)}</li>
+            <li>Encumbrance points: {encumbrancePoints}</li>
+            <li>DEX Strike Rank: {dexStrikeRank}</li>
+            <li>SIZ Strike Rank: {sizeStrikeRank}</li>
         </ul>
     }
 

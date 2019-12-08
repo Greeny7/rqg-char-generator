@@ -20,25 +20,20 @@ const mapStateToProps = (state: GlobalState): MainPagePropsFromState => ({
 
 class MainPageView extends React.PureComponent<MainPagePropsFromState> {
 
+    stepMap = {
+        [Step.HOMELAND]: () => <HomelandStep />,
+        [Step.RUNES]: () => <RunesStep />,
+        [Step.RUNES_DISTRIBUTION]: () => <RunesDistributionStep />,
+        [Step.CHARACTERISTICS]: () => <CharacteristicsStep />,
+        [Step.RUNES_AFFINITY]: () => <RunesAffinityBonusStep />,
+    }
+
     render() {
         return <div>
             <h1>Character Generator for Runequest: Roleplaying in Glorantha</h1>
             <div className={CSS.content}>
                 <main className={CSS.main}>
-                    {
-                        this.props.step === Step.HOMELAND
-                            ? <CharacteristicsStep />
-                            : this.props.step === Step.RUNES
-                            ? <RunesStep />
-                            : this.props.step === Step.RUNES_DISTRIBUTION
-                            ? <RunesDistributionStep />
-                            : this.props.step === Step.CHARACTERISTICS
-                            ? <HomelandStep />
-                            : this.props.step === Step.RUNES_AFFINITY
-                            ? <RunesAffinityBonusStep />
-                            : null
-                    }
-
+                    {this.stepMap[this.props.step]() || null}
                 </main>
                 <aside className={CSS.asideRight}>
                     <CharacterDetails />

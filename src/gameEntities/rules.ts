@@ -1,6 +1,6 @@
-import { Step } from '../store/stepsStore/stepsStoreTypes';
-import { Characteristics, HitLocation } from './gameEntitiesTypes';
-import { CharacteristicsStore } from '../store/characterStore/characterStoreTypes';
+import {Step} from '../store/stepsStore/stepsStoreTypes';
+import {DiceRoll, DiceType, HitLocation} from './gameEntitiesTypes';
+import {CharacteristicsStore} from '../store/characterStore/characterStoreTypes';
 
 export const stepsOrder = Object.freeze([
     Step.HOMELAND,
@@ -55,3 +55,49 @@ export const calculateMaxLocationsHp = (totalHp: number) => ({
 });
 
 export const calculateHealingRate = (con: number) => Math.max(1, Math.ceil((con) / 6));
+
+export const calculateDamageBonus = (characteristics: CharacteristicsStore): DiceRoll => {
+    const {SIZ, CON} = characteristics;
+    const sum = SIZ + CON;
+    if (sum <= 12) return {type: DiceType.D4, isNegative: true};
+    if (sum <= 24) return null;
+    if (sum <= 32) return {type: DiceType.D4};
+    if (sum <= 40) return {type: DiceType.D6};
+    return {type: DiceType.D6, quantity: 1 + Math.ceil((sum - 40) / 16)};
+};
+
+export const calculateSpiritCombatDamage = (characteristics: CharacteristicsStore): DiceRoll => {
+    const {POW, CHA} = characteristics;
+    const sum = POW + CHA;
+    if (sum <= 12) return {type: DiceType.D3};
+    if (sum <= 24) return {type: DiceType.D6};
+    if (sum <= 32) return {type: DiceType.D6, fixedPart: 1};
+    if (sum <= 40) return {type: DiceType.D6, fixedPart: 3};
+    if (sum <= 56) return {type: DiceType.D6, quantity: 2, fixedPart: 3};
+
+    const timesOf16 = Math.ceil((sum - 56) / 16);
+    return {type: DiceType.D6, quantity: 2 + timesOf16, fixedPart: 3 + timesOf16};
+};
+
+export const calculateEncumbrancePoints = (characteristics: CharacteristicsStore): number => {
+    const {STR, CON} = characteristics;
+    return STR < CON
+        ? STR
+        : Math.round((STR + CON) / 2);
+};
+
+export const calculateDexStrikeRank = (dex: number): number => {
+    if (dex <= 5) return 5;
+    if (dex <= 8) return 4;
+    if (dex <= 12) return 3;
+    if (dex <= 15) return 2;
+    if (dex <= 18) return 1;
+    return 0;
+};
+
+export const calculateSizStrikeRank = (siz: number): number => {
+    if (siz <= 6) return 3;
+    if (siz <= 14) return 2;
+    if (siz <= 21) return 1;
+    return 0;
+};
