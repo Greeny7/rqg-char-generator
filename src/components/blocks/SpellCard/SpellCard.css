@@ -1,0 +1,46 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    margin: 0 3% 15px 0;
+    position: relative;
+    border: 1px solid black;
+    padding: 5px;
+    height: 300px;
+    overflow: hidden;
+    resize: vertical;
+}
+
+.container.rolled {
+    resize: none;
+    height: 60px;
+}
+
+.container p {
+    margin: 0 0 15px;
+}
+
+.buttonRoll {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+}
+
+.title {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 10px 0 20px;
+    padding-right: 50px;
+}
+
+.text {
+    overflow: auto;
+}
+
+.mpCost {
+    /*font-size: 15px;*/
+    font-weight: bold;
+    /*position: absolute;*/
+    /*top: 20px;*/
+    /*right: 10px;*/
+}

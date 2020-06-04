@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.filters {
+
+}
+
+.spellsContainer {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 75%;
+}
+
+.filters {
+    width: 25%;
+}
+
+.spellsContainer {
+    width: 75%;
+}
