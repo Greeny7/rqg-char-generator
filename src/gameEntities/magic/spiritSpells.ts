@@ -1,6 +1,6 @@
 import {SpiritSpell} from "./types";
 
-export const spiritMagicSpells: SpiritSpell[] = [
+export const spiritSpells: SpiritSpell[] = [
     {
         title: 'Befuddle',
         mpCost: 2,
@@ -198,6 +198,16 @@ export const spiritMagicSpells: SpiritSpell[] = [
         duration: 'temporal',
         type: 'passive',
         description: `
+            Заклинатель делает бросок POW против POW цели. При успехе, жертва теряет веру в возможность
+            выиграть бой, найти сокровище, принести славу своему клану, или достигнуть какой-либо другой цели.
+            Жертва может продолжать защищаться, но шанс успешного броска на атаку для нее уменьшен вдвое.
+            Она может использовать только защитные и исцеляющие заклинания. Если заклинание было применено до начала боя,
+            жертва не будет пытаться атаковать. Встретив превосходящие силы, жертва убежит или сдастся. /n
+            
+            Заклинание Fanaticism аннулирует действие Demoralize, и наоборот. Жертва, осознающая, что она находится под действием заклинания,
+            может попытаться использовать навык Meditate, чтобы избавиться от его эффекта. /n
+            
+        
             The user of this spell must first succeed in a POW vs. POW
             resistance roll against the intended target. If the Demoralize
             spell is successful, the victim loses faith in their own ability
@@ -334,6 +344,11 @@ export const spiritMagicSpells: SpiritSpell[] = [
         range: 'ranged',
         duration: 'instant',
         description: `
+            1 MP, вложенный в это заклинание, может развеять заклинание магии Духов с аналогичной силой 1 MP.
+            2 MP, вложенные в это заклинание, могут развеять заклинание Рунной Магии с силой 2 RP. Нельзя развеять только часть заклинания. /n
+            Если не указано обратное, то Dispel сначала уничтожает защитные заклинания, начиная с самого мощного заклинания, которое может быть снято.
+            Однако, по желанию заклинателя, заклинание Dispel может быть направлено на конкретное заклинание, которое тот хочет развеять.
+            
             This spell eliminates magic: 1 point removes 1 magic point
             of spirit magic or intensity of sorcery spells; 2 points removes
             1 point of Rune magic spells. The total points of the spell
@@ -546,6 +561,7 @@ export const spiritMagicSpells: SpiritSpell[] = [
         range: 'touch',
         duration: 'instant',
         description: `
+            Каждый вложенный MP восстанавливает 1HP части тела. 2 MP достаточно для остановки кровотечения, 6MP для восстановления отрубленной части тела (если она доступна) /n
             This spell repairs damage done to hit points. The part of
             the body being healed must be touched. Each point of Heal
             repairs 1 hit point in a designated location. The effect is
@@ -729,6 +745,9 @@ export const spiritMagicSpells: SpiritSpell[] = [
         duration: 'temporal',
         type: 'passive',
         description: `
+            Каждый 1 MP добавляет 1 пункт брони для всего тела, или для какого-либо объекта. /n
+            Это заклинание не совместимо с заклинаниями Сountermagic, Shimmer,
+            and Spirit Screen /n /n
             Each point of this spell adds 1 point of armor protection
             to the whole body or object. It acts in every way like
             normal armor. /n

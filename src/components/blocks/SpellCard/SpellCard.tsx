@@ -3,24 +3,32 @@ import * as React from "react";
 import {useState} from "react";
 const CSS = require('./SpellCard.css');
 
-export const SpellCard = (spell: SpiritSpell) => {
-    const [rolled, changeRolled] = useState(false)
+interface SpellCardProps {
+    spell: SpiritSpell,
+    isBookmarked: boolean,
+    bookmark: (spellTitle: string, mark: boolean) => void
+}
+
+export const SpellCard: React.FC<SpellCardProps> = (props) => {
+    const {spell, bookmark, isBookmarked} = props;
 
     const containerClasses = [CSS.container];
-    if (rolled) {
-        containerClasses.push(CSS.rolled)
+    if (isBookmarked) {
+        containerClasses.push(CSS.bookmarked)
     }
 
     return <div className={containerClasses.join(' ')}>
-        {/*<button className={CSS.buttonRoll} onClick={() => changeRolled(!rolled)}>{rolled ? '+' : '-'}</button>*/}
-        <div className={CSS.title}>{spell.title}</div>
-        {spell.mpCost && <p className={CSS.mpCost}>MP cost: {spell.mpCost}</p>}
+        <div className={CSS.title}>
+            <button className={CSS.buttonMark} onClick={() => bookmark(spell.title, !isBookmarked)}>*</button>
+            <span>{spell.title}</span>
+        </div>
         <p><b>
+            {spell.mpCost && `${spell.mpCost} MP, `}
             {spell.ritual && 'ritual, '}
             {spell.enchantment && 'enchantment, '}
             {[spell.range, spell.duration, spell.type].filter(Boolean).join(', ')}
         </b></p>
-        <div className={CSS.text}>
+        <div className={CSS.text} contentEditable={true}>
             {spell.description.split('/n').map(line => <p>{line}</p>)}
         </div>
     </div>;

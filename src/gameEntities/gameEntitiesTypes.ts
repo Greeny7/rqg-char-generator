@@ -1,4 +1,5 @@
 import {CharacteristicsStore} from "../store/characterStore/characterStoreTypes";
+import {OtherRunes} from "./runes/otherRunes";
 
 export interface Homeland {
     title: HomelandTitle;
@@ -96,6 +97,8 @@ export enum RuneType {
     POWER = 'power',
     FORM = 'form',
 }
+
+export type Rune = RuneElementalTitle | RunePowerTitle | RuneFormTitle | OtherRunes;
 
 export enum RuneElementalTitle {
     WIND = 'wind',
