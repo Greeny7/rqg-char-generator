@@ -13,8 +13,9 @@ document.body.appendChild(appElement);
 const App = () => (
     <Router>
         <div>
-            <Route exact path="/charGen" component={MainPage} />
-            <Route exact path="/" component={SpellBook} />
+            <SpellBook />
+            {/*<Route exact path="/charGen" component={MainPage} />*/}
+            {/*<Route exact path="/" component={} />*/}
         </div>
     </Router>
 );
