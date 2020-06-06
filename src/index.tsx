@@ -11,15 +11,9 @@ appElement.id = 'app';
 document.body.appendChild(appElement);
 
 const App = () => (
-    <Router>
-        <div>
-            <SpellBook />
-            {/*<Route exact path="/charGen" component={MainPage} />*/}
-            {/*<Route exact path="/" component={} />*/}
-        </div>
-    </Router>
+    <SpellBook />
 );
-
+console.log(123123);
 ReactDOM.render(
     <Provider store={store}>
         <App />
