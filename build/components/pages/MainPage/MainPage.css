@@ -1,0 +1,25 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+.content {
+    position: relative;
+}
+
+.main {
+    width: calc(100% - 400px);
+}
+
+.asideRight {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    overflow: auto;
+    width: 400px;
+    padding-left: 20px;
+}

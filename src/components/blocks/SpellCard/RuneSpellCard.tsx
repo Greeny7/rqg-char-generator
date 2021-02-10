@@ -1,7 +1,6 @@
-import {RuneSpell, SpiritSpell} from "../../../gameEntities/magic/types";
+import {RuneSpell} from "../../../gameEntities/magic/types";
 import * as React from "react";
-import {useState} from "react";
-const CSS = require('./SpellCard.css');
+import CSS from './SpellCard.module.less';
 
 interface SpellCardProps {
     spell: RuneSpell,

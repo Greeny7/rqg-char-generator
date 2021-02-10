@@ -1,0 +1,80 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    margin: 0 0 15px 0;
+    position: relative;
+    border: 2px solid black;
+    padding: 5px;
+    height: 300px;
+    overflow: hidden;
+    resize: vertical;
+}
+
+@media (max-width: 1024px) {
+    .container {
+        width: 47%;
+    }
+}
+
+@media (max-width: 700px) {
+    .container {
+        width: 97%;
+    }
+}
+
+.container.rolled {
+    resize: none;
+    height: 60px;
+}
+
+.container.bookmarked .buttonMark  {
+    background: gold;
+}
+
+.container p {
+    margin: 0 0 15px;
+}
+
+.buttonMark {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+    height: 20px;
+    width: 20px;
+    /*position: absolute;*/
+    /*top: 20px;*/
+    /*right: 10px;*/
+}
+
+.title {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 10px 0 20px;
+    padding-right: 50px;
+}
+
+.title span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.text {
+    overflow: auto;
+}
+
+.text p {
+    line-height: 1.5;
+}
+
+.mpCost {
+    /*font-size: 15px;*/
+    font-weight: bold;
+    /*position: absolute;*/
+    /*top: 20px;*/
+    /*right: 10px;*/
+}
+
+.runes {
+    font-weight: bold;
+}

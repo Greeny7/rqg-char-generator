@@ -1,19 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { CharacterDetails } from '../../blocks/CharacterDetails/CharacterDetails';
-import {HomelandStep} from "../../blocks/steps/HomelandStep/HomelandStep";
-import {RunesStep} from "../../blocks/steps/RunesStep/RunesStep";
 import {Step} from "../../../store/stepsStore/stepsStoreTypes";
 import {GlobalState} from "../../../store/storeTypes";
-import {RunesDistributionStep} from "../../blocks/steps/RunesDistributionStep/RunesDistributionStep";
-import {CharacteristicsStep} from "../../blocks/steps/CharacteristicsStep/CharacteristicsStep";
-import { RunesAffinityBonusStep } from '../../blocks/steps/RunesAffinityBonusStep/RunesAffinityBonusStep';
 import {spiritSpells} from "../../../gameEntities/magic/spiritSpells";
 import {SpellCard} from "../../blocks/SpellCard/SpellCard";
-import {RuneSpell, Spell, SpiritSpell} from "../../../gameEntities/magic/types";
+import {Spell} from "../../../gameEntities/magic/types";
 import {runeSpells} from "../../../gameEntities/magic/runeSpells";
 import {RuneSpellCard} from "../../blocks/SpellCard/RuneSpellCard";
-const CSS = require('./SpellBook.css');
+import CSS from './SpellBook.module.css';
 
 interface SpellListPropsFromState {
     step: Step;
